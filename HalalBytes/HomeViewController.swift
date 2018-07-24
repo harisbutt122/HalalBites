@@ -17,6 +17,8 @@ import PMAlertController
 class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
     
+    @IBOutlet weak var Profile_Name: UILabel!
+    @IBOutlet weak var ProfilePicture: UIImageView!
     @IBOutlet weak var transitionButton: UIButton!
     @IBOutlet weak var SearchBar: UISearchBar!
     @IBOutlet weak var CollectionVIew: UICollectionView!
@@ -108,7 +110,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         
         SVProgressHUD.show(withStatus: "Biting")
         let userID = FBSDKAccessToken.current().userID
-        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields":"email,name"] , httpMethod: "GET")
+        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields":"email,name,picture"] , httpMethod: "GET")
         
         
         
@@ -123,10 +125,38 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
                 //                print("result \(UserCred)")
                 
                 let json = JSON(result)
-                print(json)
                 
+                
+                let picture = json["picture"].dictionary
+                print(json)
+               
+                let data = picture!["data"]?.dictionaryObject
+                print(data)
+                let url = data!["url"] as! String
+                print(url)
+                let remoteImageURL = URL(string: url)!
+                print(remoteImageURL)
+                // Use Alamofire to download the image
+                Alamofire.request(remoteImageURL).responseData { (response) in
+                    if response.error == nil {
+                        print(response.result)
+                        
+                        if let data = response.data {
+                            self.ProfilePicture.image = UIImage(data: data)
+                            
+                            
+                        }
+                    }
+                }
+                
+                
+//                print(picture)
+//                guard let data = picture!["data"] as? [String:Any] else {return}
+//
+//                print(data)
                 self.appdelegate.name = json["name"].string
                 self.appdelegate.email = json["email"].string
+                self.Profile_Name.text = self.appdelegate.name
                 print()
                 print(self.appdelegate.name)
                 print(self.appdelegate.email)
@@ -882,10 +912,12 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
             print(text)
             print(QrcodeAPI+text)
             let url = QrcodeAPI+text
+            SVProgressHUD.show(withStatus: "Biting")
             Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON { (response) in
                 print(response.result.value)
                 let Allvalues = JSON(response.result.value)
                 let message = Allvalues["message"].string
+                let deal_id = Allvalues["deal_id"].number
                 print(message)
                 if message == "deal_expired"{
                     let alertVC = PMAlertController(title: "", description: "We are sorry, but the deal has expired. Please contact the restaurant/cafe.", image:UIImage(named: "halal"), style: .alert)
@@ -899,7 +931,7 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
-                    
+                    SVProgressHUD.dismiss()
                     
                 }else if message == "deal_code_not_found"{
                     let alertVC = PMAlertController(title: "", description: "We are sorry, we could not find the deal. Please contact the restaurant/cafe.", image:UIImage(named: "halal"), style: .alert)
@@ -913,7 +945,7 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
-                    
+                     SVProgressHUD.dismiss()
                     
                 }else if message == "deal_not_given"{
                     
@@ -929,6 +961,8 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
+                    
+                     SVProgressHUD.dismiss()
                 }else {
                     let alertVC = PMAlertController(title: message!, description: message!, image:UIImage(named: "halal"), style: .alert)
                     
@@ -937,13 +971,53 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
                         print("Capture action OK")
                     }))
                     alertVC.addAction(PMAlertAction(title: "CONFIRM", style: .default, action: { () in
+                        SVProgressHUD.show(withStatus: "Biting")
+                         let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
+                        let bodyParams = ["user_id":self.appdelegate.User_ID,"deal_id":deal_id] as [String : Any]
+                        Alamofire.request(ProcessAPI, method: .post, parameters: bodyParams, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON(completionHandler: { (response) in
+                            print(response.result.value)
+                            let Allvalues = JSON(response.result.value)
+                            let message1 = Allvalues["message"].string
+                            print(message1)
+                            if message1 == "deal_already_consumed"{
+                                
+                                let alertVC = PMAlertController(title: "", description: "You have already consumed the deal.", image:UIImage(named: "halal"), style: .alert)
+                                
+                                
+                                
+                                alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                                    print("Capture action OK")
+                                }))
+                                
+                                
+                                
+                                self.present(alertVC, animated: true, completion: nil)
+                                SVProgressHUD.dismiss()
+                                
+                            }else {
+                                let alertVC = PMAlertController(title: message1!, description: "Your deal has been applied successfully. Please show this code to restaurant/cafe in order to avail the deal.", image:UIImage(named: "halal"), style: .alert)
+                                
+                                
+                                
+                                alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                                    print("Capture action OK")
+                                }))
+                                
+                                
+                                
+                                self.present(alertVC, animated: true, completion: nil)
+                                SVProgressHUD.dismiss()
+                                
+                                
+                            }
+                        })
                         print("Capture action OK")
                     }))
                     
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
-                    
+                     SVProgressHUD.dismiss()
                     
                     
                 }

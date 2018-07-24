@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "606F4DCB9A10D965BB484710C5D82C70"
+               BlueprintIdentifier = "E08CDEC2A59DB7F6EB03C097EDEBAD4F"
                BlueprintName = "TCPickerView"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "TCPickerView.framework">

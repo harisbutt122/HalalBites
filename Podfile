@@ -16,6 +16,7 @@ pod 'TCPickerView'
 pod 'BubbleTransition', '~> 3.0.0'
 pod 'JTMaterialTransition', '~> 2.0'
 pod 'PMAlertController'
+pod 'AnimatedMaskLabel'
 
 
 

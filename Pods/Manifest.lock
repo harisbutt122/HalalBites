@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.2)
+  - AnimatedMaskLabel (1.0.1)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -21,6 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - AnimatedMaskLabel
   - BubbleTransition (~> 3.0.0)
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -34,6 +36,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
+    - AnimatedMaskLabel
     - Bolts
     - BubbleTransition
     - FBSDKCoreKit
@@ -47,6 +50,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AnimatedMaskLabel: 995f1cdcae80700be58126d70e0fe05619d86b77
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BubbleTransition: 5038c843e449052f1bbbe0451605c45ec5b3ca0a
   FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
@@ -58,6 +62,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TCPickerView: 4bacd1f81121b3a12ff4624da657e3dfd1738383
 
-PODFILE CHECKSUM: 65c37d39c92c49a6f471218b733a1336710c03ed
+PODFILE CHECKSUM: 1723489e61e07e02197204b4968ce0dea89c9f3b
 
 COCOAPODS: 1.5.0
