@@ -15,6 +15,7 @@ let CusinesAPI = "https://www.halalbites.org/api/cuisines"
 let AddRestaurantsAPI = "https://www.halalbites.org/api/restaurant/add"
 let SearchAPI = "https://www.halalbites.org/api/restaurant/search"
 let HoursAPI = "https://www.halalbites.org/api/restaurant/hours/"
+let QrcodeAPI = "https://www.halalbites.org/api/deal/details/"
 
 struct HeaderParamters {
     

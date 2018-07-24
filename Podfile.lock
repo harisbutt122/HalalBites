@@ -15,6 +15,7 @@ PODS:
     - FBSDKCoreKit (~> 4.31.1)
   - IQKeyboardManagerSwift (6.0.3)
   - JTMaterialTransition (2.0.1)
+  - PMAlertController (3.4.0)
   - SVProgressHUD (2.2.5)
   - TCPickerView (0.1.9)
 
@@ -26,6 +27,7 @@ DEPENDENCIES:
   - FBSDKShareKit
   - IQKeyboardManagerSwift
   - JTMaterialTransition (~> 2.0)
+  - PMAlertController
   - SVProgressHUD
   - TCPickerView
 
@@ -39,6 +41,7 @@ SPEC REPOS:
     - FBSDKShareKit
     - IQKeyboardManagerSwift
     - JTMaterialTransition
+    - PMAlertController
     - SVProgressHUD
     - TCPickerView
 
@@ -51,9 +54,10 @@ SPEC CHECKSUMS:
   FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
   IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
   JTMaterialTransition: 2350b44b404d1982a7ba755866cc65da452f4eec
+  PMAlertController: efb781925d741d50e0200018a00c53cecb8b4910
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TCPickerView: 4bacd1f81121b3a12ff4624da657e3dfd1738383
 
-PODFILE CHECKSUM: 8228679a1dff87828ca3186bb1826f13263d13e8
+PODFILE CHECKSUM: 65c37d39c92c49a6f471218b733a1336710c03ed
 
 COCOAPODS: 1.5.0

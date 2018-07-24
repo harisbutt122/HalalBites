@@ -12,7 +12,7 @@ import Alamofire
 import SVProgressHUD
 import BubbleTransition
 import MapKit
-
+import PMAlertController
 
 class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
@@ -878,7 +878,79 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
         case .text:
             showAlert(msg: "Text: \(text)")
         case .other:
-            showAlert(msg: "Other: \(text)")
+            let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
+            print(text)
+            print(QrcodeAPI+text)
+            let url = QrcodeAPI+text
+            Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON { (response) in
+                print(response.result.value)
+                let Allvalues = JSON(response.result.value)
+                let message = Allvalues["message"].string
+                print(message)
+                if message == "deal_expired"{
+                    let alertVC = PMAlertController(title: "", description: "We are sorry, but the deal has expired. Please contact the restaurant/cafe.", image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    
+                    
+                }else if message == "deal_code_not_found"{
+                    let alertVC = PMAlertController(title: "", description: "We are sorry, we could not find the deal. Please contact the restaurant/cafe.", image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    
+                    
+                }else if message == "deal_not_given"{
+                    
+                    
+                    let alertVC = PMAlertController(title: "", description: "We are sorry, but the deal could not be found. Please contact the restaurant/cafe.", image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                }else {
+                    let alertVC = PMAlertController(title: message!, description: message!, image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "CANCEL", style: .cancel, action: { () in
+                        print("Capture action OK")
+                    }))
+                    alertVC.addAction(PMAlertAction(title: "CONFIRM", style: .default, action: { () in
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    
+                    
+                    
+                }
+               
+            }
+            
+           
         }
         
     }
