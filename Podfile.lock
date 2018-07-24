@@ -1,0 +1,59 @@
+PODS:
+  - Alamofire (4.7.2)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.9.0)
+  - BubbleTransition (3.0.1)
+  - FBSDKCoreKit (4.31.1):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.31.1):
+    - FBSDKCoreKit
+  - FBSDKShareKit (4.31.1):
+    - FBSDKCoreKit (~> 4.31.1)
+  - IQKeyboardManagerSwift (6.0.3)
+  - JTMaterialTransition (2.0.1)
+  - SVProgressHUD (2.2.5)
+  - TCPickerView (0.1.9)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.7)
+  - BubbleTransition (~> 3.0.0)
+  - FBSDKCoreKit
+  - FBSDKLoginKit
+  - FBSDKShareKit
+  - IQKeyboardManagerSwift
+  - JTMaterialTransition (~> 2.0)
+  - SVProgressHUD
+  - TCPickerView
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - Bolts
+    - BubbleTransition
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+    - IQKeyboardManagerSwift
+    - JTMaterialTransition
+    - SVProgressHUD
+    - TCPickerView
+
+SPEC CHECKSUMS:
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  BubbleTransition: 5038c843e449052f1bbbe0451605c45ec5b3ca0a
+  FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
+  FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
+  FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
+  IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
+  JTMaterialTransition: 2350b44b404d1982a7ba755866cc65da452f4eec
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TCPickerView: 4bacd1f81121b3a12ff4624da657e3dfd1738383
+
+PODFILE CHECKSUM: 8228679a1dff87828ca3186bb1826f13263d13e8
+
+COCOAPODS: 1.5.0
