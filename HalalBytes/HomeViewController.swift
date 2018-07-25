@@ -16,7 +16,8 @@ import PMAlertController
 
 class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
-    
+   
+   
     @IBOutlet weak var Profile_Name: UILabel!
     @IBOutlet weak var ProfilePicture: UIImageView!
     @IBOutlet weak var transitionButton: UIButton!
@@ -563,19 +564,21 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         let vc = MGPScannerViewController.viewControllerFrom(storyboard: "Main", withIdentifier: "MGPScannerViewController")!
         vc.delegate = self
         vc.closeBarButtonDirection = .right
-        vc.overlayColor = UIColor.yellow
+        vc.overlayColor = UIColor(displayP3Red: 250/255, green: 182/255, blue: 0/255, alpha: 1.0)
         //        vc.closeBarButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
         
         let nav = UINavigationController(rootViewController: vc)
         nav.navigationBar.tintColor = UIColor.white
-        nav.navigationBar.barTintColor = UIColor.yellow
+        nav.navigationBar.barTintColor = UIColor(displayP3Red: 250/255, green: 182/255, blue: 0/255, alpha: 1.0)
+        nav.navigationItem.title  = "Scan QR code"
         present(nav, animated: true, completion: nil)
     }
     @objc func close() {
         navigationController?.popViewController(animated: true)
         //        self.dismiss(animated: true, completion: nil)
     }
-    
+ 
+  
 }
 extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource, UISearchResultsUpdating, UIViewControllerTransitioningDelegate,UITableViewDelegate,UITableViewDataSource{
  
@@ -894,19 +897,79 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
     func barcodeDidScannedWith(text: String, OfType type: ScannedItem, error: ScanningError?) {
         
         if let error = error {
-            showAlert(msg: error.msg)
+           
+            let alertVC = PMAlertController(title: "", description: "Scanning error!. Please try again.", image:UIImage(named: "halal"), style: .alert)
+            
+            
+            
+            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                print("Capture action OK")
+            }))
+            
+            
+            
+            self.present(alertVC, animated: true, completion: nil)
+           
             return
         }
         
         switch type {
         case .email:
-            showAlert(msg: "Email : \(text)")
+            
+            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+            
+            
+            
+            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                print("Capture action OK")
+            }))
+            
+            
+            
+            self.present(alertVC, animated: true, completion: nil)
+            
         case .link:
-            showAlert(msg: "Link: \(text)")
+            SVProgressHUD.show(withStatus: "Biting")
+            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+            
+            
+            
+            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                print("Capture action OK")
+            }))
+            
+            
+            
+            self.present(alertVC, animated: true, completion: nil)
+          
         case .number:
-            showAlert(msg: "Number: \(text)")
+           
+            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+            
+            
+            
+            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                print("Capture action OK")
+            }))
+            
+            
+            
+            self.present(alertVC, animated: true, completion: nil)
+      
         case .text:
-            showAlert(msg: "Text: \(text)")
+          
+            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+            
+            
+            
+            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                print("Capture action OK")
+            }))
+            
+            
+            
+            self.present(alertVC, animated: true, completion: nil)
+        
         case .other:
             let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
             print(text)

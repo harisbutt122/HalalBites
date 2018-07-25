@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C00BBBC20F0B13100351BB3 /* CusinesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C00BBBB20F0B13100351BB3 /* CusinesTableViewCell.swift */; };
+		3C53C2D52108AE0000D21B26 /* JTMaterialTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C53C2D42108AE0000D21B26 /* JTMaterialTransition.swift */; };
 		3C7AAA28208C1B3700C23E07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7AAA27208C1B3700C23E07 /* AppDelegate.swift */; };
 		3C7AAA2A208C1B3700C23E07 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7AAA29208C1B3700C23E07 /* LoginViewController.swift */; };
 		3C7AAA2D208C1B3700C23E07 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C7AAA2B208C1B3700C23E07 /* Main.storyboard */; };
@@ -54,6 +55,7 @@
 /* Begin PBXFileReference section */
 		052001D4FE57B4E77A5B0F10 /* Pods-HalalBytesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HalalBytesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HalalBytesUITests/Pods-HalalBytesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3C00BBBB20F0B13100351BB3 /* CusinesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CusinesTableViewCell.swift; sourceTree = "<group>"; };
+		3C53C2D42108AE0000D21B26 /* JTMaterialTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JTMaterialTransition.swift; sourceTree = "<group>"; };
 		3C7AAA24208C1B3700C23E07 /* HalalBytes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HalalBytes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C7AAA27208C1B3700C23E07 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3C7AAA29208C1B3700C23E07 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				EA934E8B20D909880075B865 /* ExampleTableViewCell.xib */,
 				EA6CA3B12105FE08009D68EF /* QRCodeViewController.swift */,
 				EA6CA3B321060148009D68EF /* MGPScannerViewController.swift */,
+				3C53C2D42108AE0000D21B26 /* JTMaterialTransition.swift */,
 			);
 			path = HalalBytes;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 			files = (
 				3C7AAA2A208C1B3700C23E07 /* LoginViewController.swift in Sources */,
 				EA934E8820D905250075B865 /* TCPickerView.swift in Sources */,
+				3C53C2D52108AE0000D21B26 /* JTMaterialTransition.swift in Sources */,
 				3C00BBBC20F0B13100351BB3 /* CusinesTableViewCell.swift in Sources */,
 				EA55DBD020EE50BA00F876F9 /* AddRestaurantViewController.swift in Sources */,
 				3C7AAA5C208CB17700C23E07 /* AccountViewController.swift in Sources */,
@@ -633,10 +637,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8UZRU52F8S;
+				DEVELOPMENT_TEAM = AQ43383N28;
 				INFOPLIST_FILE = HalalBytes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HASol.HalalBitess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -650,10 +657,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8UZRU52F8S;
+				DEVELOPMENT_TEAM = AQ43383N28;
 				INFOPLIST_FILE = HalalBytes/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.HASol.HalalBitess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -669,7 +679,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HalalBytesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "HA-Sol.HalalBytesTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -686,7 +700,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HalalBytesTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "HA-Sol.HalalBytesTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -702,7 +720,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HalalBytesUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "HA-Sol.HalalBytesUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -718,7 +740,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = HalalBytesUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "HA-Sol.HalalBytesUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
