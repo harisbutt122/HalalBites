@@ -51,18 +51,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.gradient)
         IQKeyboardManager.shared.enable = true
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        if FBSDKAccessToken.current() != nil{
-            
-            
-            let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            uistoryboard.instantiateInitialViewController()
-            let homeviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "homeview")
-            if let windows = self.window{
-                windows.rootViewController = homeviewcontroller
-                
-            }
-
-        }
+//        if FBSDKAccessToken.current() != nil{
+//            
+//            
+//            let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            uistoryboard.instantiateInitialViewController()
+//            let homeviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "homeview")
+//            if let windows = self.window{
+//                windows.rootViewController = homeviewcontroller
+//                
+//            }
+//
+//        }
         
         return true
     }

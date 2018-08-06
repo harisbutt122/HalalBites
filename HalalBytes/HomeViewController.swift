@@ -111,7 +111,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         
         SVProgressHUD.show(withStatus: "Biting")
         let userID = FBSDKAccessToken.current().userID
-        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields":"email,name,picture"] , httpMethod: "GET")
+        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
         
         
         

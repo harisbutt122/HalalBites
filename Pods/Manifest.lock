@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.7.2)
   - AnimatedMaskLabel (1.0.1)
+  - AZTransitions (0.22)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -17,12 +18,16 @@ PODS:
   - IQKeyboardManagerSwift (6.0.3)
   - JTMaterialTransition (2.0.1)
   - PMAlertController (3.4.0)
+  - RAMAnimatedTabBarController (3.2.0)
   - SVProgressHUD (2.2.5)
   - TCPickerView (0.1.9)
+  - TransitionButton (0.4.0)
+  - TweeTextField (1.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
   - AnimatedMaskLabel
+  - AZTransitions
   - BubbleTransition (~> 3.0.0)
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -30,27 +35,16 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift
   - JTMaterialTransition (~> 2.0)
   - PMAlertController
+  - RAMAnimatedTabBarController
   - SVProgressHUD
   - TCPickerView
-
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - Alamofire
-    - AnimatedMaskLabel
-    - Bolts
-    - BubbleTransition
-    - FBSDKCoreKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
-    - IQKeyboardManagerSwift
-    - JTMaterialTransition
-    - PMAlertController
-    - SVProgressHUD
-    - TCPickerView
+  - TransitionButton
+  - TweeTextField
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   AnimatedMaskLabel: 995f1cdcae80700be58126d70e0fe05619d86b77
+  AZTransitions: 84fb95a278aedcba3c162443491544a5b9c485eb
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BubbleTransition: 5038c843e449052f1bbbe0451605c45ec5b3ca0a
   FBSDKCoreKit: e08ccfcefa7bc1347a07c276dac9bf6c7fe57024
@@ -59,9 +53,12 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
   JTMaterialTransition: 2350b44b404d1982a7ba755866cc65da452f4eec
   PMAlertController: efb781925d741d50e0200018a00c53cecb8b4910
+  RAMAnimatedTabBarController: 0499157f67053a21bcccb52a25dd3c6ecdbfb4f6
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TCPickerView: 4bacd1f81121b3a12ff4624da657e3dfd1738383
+  TransitionButton: d271030914c84a00b54b4d983446944d2875e7ba
+  TweeTextField: 367d1393434018cfc8e40ad76087855b73253d99
 
-PODFILE CHECKSUM: 1723489e61e07e02197204b4968ce0dea89c9f3b
+PODFILE CHECKSUM: 3dcdd7c8e454fe28cde5c50a91bee954c24c421a
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.4.0
