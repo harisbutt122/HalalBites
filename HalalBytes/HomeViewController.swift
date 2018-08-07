@@ -13,6 +13,7 @@ import SVProgressHUD
 import BubbleTransition
 import MapKit
 import PMAlertController
+import CoreData
 
 class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
@@ -52,6 +53,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         let pi = 3.14159
         
         let text = String(format: "%.0f", arguments: [pi])
+        
         
         print(text)
         print(self.appdelegate.Current_Latitude)
@@ -109,81 +111,82 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
     }
     func FacebookGraphRequest(){
         
-        SVProgressHUD.show(withStatus: "Biting")
-        let userID = FBSDKAccessToken.current().userID
-        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
-        
-        
-        
-        request?.start(completionHandler: { connection, result, error in
-            
-           
-            
-            if(error == nil)
-            {
-                //                guard let UserCred = result as? [String:Any] else {return}
-                //               guard let UserName = UserCred["name"] as!
-                //                print("result \(UserCred)")
-                
-                let json = JSON(result)
-                
-                
-                let picture = json["picture"].dictionary
-                print(json)
-               
-                let data = picture!["data"]?.dictionaryObject
-                print(data)
-                let url = data!["url"] as! String
-                print(url)
-                let remoteImageURL = URL(string: url)!
-                print(remoteImageURL)
-                // Use Alamofire to download the image
-                Alamofire.request(remoteImageURL).responseData { (response) in
-                    if response.error == nil {
-                        print(response.result)
-                        
-                        if let data = response.data {
-                            self.ProfilePicture.image = UIImage(data: data)
-                            
-                            
-                        }
-                    }
-                }
-                
-                
-//                print(picture)
-//                guard let data = picture!["data"] as? [String:Any] else {return}
+//        SVProgressHUD.show(withStatus: "Biting")
+//        GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
+//        let userID = FBSDKAccessToken.current().userID
+//        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
 //
+//
+//
+//        request?.start(completionHandler: { connection, result, error in
+//
+//
+//
+//            if(error == nil)
+//            {
+//                //                guard let UserCred = result as? [String:Any] else {return}
+//                //               guard let UserName = UserCred["name"] as!
+//                //                print("result \(UserCred)")
+//
+//                let json = JSON(result)
+//
+//
+//                let picture = json["picture"].dictionary
+//                print(json)
+//
+//                let data = picture!["data"]?.dictionaryObject
 //                print(data)
-                self.appdelegate.name = json["name"].string
-                self.appdelegate.email = json["email"].string
-                self.Profile_Name.text = self.appdelegate.name
-                print()
-                print(self.appdelegate.name)
-                print(self.appdelegate.email)
-                let dic = ["email":self.appdelegate.email,"name":self.appdelegate.name]
-                
-                let LoginAPI_URL = "\(LoginAPI)?email=\"\(self.appdelegate.email!)\"&name=\"\(self.appdelegate.name!)\""
-                
-                print(LoginAPI_URL)
-                self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
-                
-                
-                //
-                
-                
-            }
-            else
-            {
-                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
-                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
-                alert.addAction(okay)
-                self.present(alert, animated: true, completion: nil)
-                SVProgressHUD.dismiss()
-                self.CollectionVIew.reloadData()
-                print("error \(error)")
-            }
-        })
+//                let url = data!["url"] as! String
+//                print(url)
+//                let remoteImageURL = URL(string: url)!
+//                print(remoteImageURL)
+//                // Use Alamofire to download the image
+//                Alamofire.request(remoteImageURL).responseData { (response) in
+//                    if response.error == nil {
+//                        print(response.result)
+//
+//                        if let data = response.data {
+//                            self.ProfilePicture.image = UIImage(data: data)
+//
+//
+//                        }
+//                    }
+//                }
+//
+//
+////                print(picture)
+////                guard let data = picture!["data"] as? [String:Any] else {return}
+////
+////                print(data)
+//                self.appdelegate.name = json["name"].string
+//                self.appdelegate.email = json["email"].string
+//                self.Profile_Name.text = self.appdelegate.name
+//                print()
+//                print(self.appdelegate.name)
+//                print(self.appdelegate.email)
+//                let dic = ["email":self.appdelegate.email,"name":self.appdelegate.name]
+//
+//                let LoginAPI_URL = "\(LoginAPI)?email=\"\(self.appdelegate.email!)\"&name=\"\(self.appdelegate.name!)\""
+//
+//                print(LoginAPI_URL)
+//                self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
+//
+//
+//                //
+//
+//
+//            }
+//            else
+//            {
+//                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
+//                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+//                alert.addAction(okay)
+//                self.present(alert, animated: true, completion: nil)
+//                SVProgressHUD.dismiss()
+//                self.CollectionVIew.reloadData()
+//                print("error \(error)")
+//            }
+//        })
 
         
     }
@@ -200,8 +203,10 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         
         SVProgressHUD.show(withStatus: "Biting")
         FacebookGraphRequest()
+        print(self.appdelegate.LoginAPI_RefreshToken)
         self.searchController.searchBar.text  = ""
         self.searchActive = false
+//         GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
 //          self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
 
         CollectionVIew.reloadData()
@@ -210,68 +215,68 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
 
    
 
-    func GetLoginAPI_FetchData(params: [String:String]) {
-        
-        let urlComp = NSURLComponents(string: LoginAPI)!
-        
-        var items = [URLQueryItem]()
-        
-        for (key,value) in params {
-            items.append(URLQueryItem(name: key, value: value))
-        }
-        
-        items = items.filter{!$0.name.isEmpty}
-        
-        if !items.isEmpty {
-            urlComp.queryItems = items
-        }
-        
-        var urlRequest = URLRequest(url: urlComp.url!)
-        urlRequest.httpMethod = "POST"
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config)
-        
-        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-            if error != nil
-            {
-                print("error=\(error)")
-                return
-            }
-            
-            // Print out response string
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            //                    print("responseString = \(responseString)")
-            
-            
-            // Convert server json response to NSDictionary
-            do {
-                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-                    
-                    // Print out dictionary
-                    
-                    let Refresh_Token = convertedJsonIntoDict["refresh_token"] as! String
-                    let User_ID = convertedJsonIntoDict["user_id"] as! Int
-                    
-                   self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
-                    self.appdelegate.User_ID = User_ID
-                    print(User_ID)
-                    self.GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken!])
-                    
-                    
-                }
-            } catch let error as NSError {
-                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
-                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
-                alert.addAction(okay)
-                self.present(alert, animated: true, completion: nil)
-                   SVProgressHUD.dismiss()
-                 self.CollectionVIew.reloadData()
-                print(error.localizedDescription)
-            }
-        })
-        task.resume()
-    }
-    
+//    func GetLoginAPI_FetchData(params: [String:String]) {
+//
+//        let urlComp = NSURLComponents(string: LoginAPI)!
+//
+//        var items = [URLQueryItem]()
+//
+//        for (key,value) in params {
+//            items.append(URLQueryItem(name: key, value: value))
+//        }
+//
+//        items = items.filter{!$0.name.isEmpty}
+//
+//        if !items.isEmpty {
+//            urlComp.queryItems = items
+//        }
+//
+//        var urlRequest = URLRequest(url: urlComp.url!)
+//        urlRequest.httpMethod = "POST"
+//        let config = URLSessionConfiguration.default
+//        let session = URLSession(configuration: config)
+//
+//        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+//            if error != nil
+//            {
+//                print("error=\(error)")
+//                return
+//            }
+//
+//            // Print out response string
+//            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+//            //                    print("responseString = \(responseString)")
+//
+//
+//            // Convert server json response to NSDictionary
+//            do {
+//                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+//
+//                    // Print out dictionary
+//
+//                    let Refresh_Token = convertedJsonIntoDict["refresh_token"] as! String
+//                    let User_ID = convertedJsonIntoDict["user_id"] as! Int
+//
+//                   self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
+//                    self.appdelegate.User_ID = User_ID
+//                    print(User_ID)
+//                    self.GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken!])
+//
+//
+//                }
+//            } catch let error as NSError {
+//                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
+//                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+//                alert.addAction(okay)
+//                self.present(alert, animated: true, completion: nil)
+//                   SVProgressHUD.dismiss()
+//                 self.CollectionVIew.reloadData()
+//                print(error.localizedDescription)
+//            }
+//        })
+//        task.resume()
+//    }
+//
     func GetRefreshTokenAPI_FetchData(params: [String:String]) {
       
         let urlComp = NSURLComponents(string: RefreshTokenAPI)!

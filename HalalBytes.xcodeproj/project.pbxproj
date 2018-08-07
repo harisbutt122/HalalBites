@@ -27,6 +27,7 @@
 		EA55DBD020EE50BA00F876F9 /* AddRestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */; };
 		EA6CA3B22105FE08009D68EF /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6CA3B12105FE08009D68EF /* QRCodeViewController.swift */; };
 		EA6CA3B421060148009D68EF /* MGPScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6CA3B321060148009D68EF /* MGPScannerViewController.swift */; };
+		EA767BFE2119B09600039A5C /* HalalBytes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EA767BFC2119B09600039A5C /* HalalBytes.xcdatamodeld */; };
 		EA934E8820D905250075B865 /* TCPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8620D905250075B865 /* TCPickerView.swift */; };
 		EA934E8920D905250075B865 /* TCPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8720D905250075B865 /* TCPickerTableViewCell.swift */; };
 		EA934E8C20D909890075B865 /* ExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8A20D909880075B865 /* ExampleTableViewCell.swift */; };
@@ -90,6 +91,7 @@
 		EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRestaurantViewController.swift; sourceTree = "<group>"; };
 		EA6CA3B12105FE08009D68EF /* QRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		EA6CA3B321060148009D68EF /* MGPScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGPScannerViewController.swift; sourceTree = "<group>"; };
+		EA767BFD2119B09600039A5C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		EA934E8620D905250075B865 /* TCPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerView.swift; sourceTree = "<group>"; };
 		EA934E8720D905250075B865 /* TCPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerTableViewCell.swift; sourceTree = "<group>"; };
 		EA934E8A20D909880075B865 /* ExampleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewCell.swift; sourceTree = "<group>"; };
@@ -169,11 +171,11 @@
 				EA135C7020C8066C0014BD66 /* SwiftyJSON.swift */,
 				3C7AAA27208C1B3700C23E07 /* AppDelegate.swift */,
 				3C7AAA29208C1B3700C23E07 /* LoginViewController.swift */,
+				EA94A82A211843E2001CA601 /* RegistrationViewController.swift */,
 				3C7AAA57208CB14100C23E07 /* HomeViewController.swift */,
 				EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */,
 				3C7AAA5B208CB17700C23E07 /* AccountViewController.swift */,
 				3C7AAA2B208C1B3700C23E07 /* Main.storyboard */,
-				EA94A82A211843E2001CA601 /* RegistrationViewController.swift */,
 				3C00BBBB20F0B13100351BB3 /* CusinesTableViewCell.swift */,
 				FE0C37E220D027E3005EE12F /* RestaurantsDetailsViewController.swift */,
 				3C7AAA55208CAB5A00C23E07 /* Assets.xcassets */,
@@ -193,6 +195,7 @@
 				EABB8C7D21185BF6009EBC0D /* AlphaByStepTransition.swift */,
 				EABB8C7C21185BF5009EBC0D /* FashionTransition.swift */,
 				EABB8C7E21185BF8009EBC0D /* UIButton+Extensions.swift */,
+				EA767BFC2119B09600039A5C /* HalalBytes.xcdatamodeld */,
 			);
 			path = HalalBytes;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C7AAA2A208C1B3700C23E07 /* LoginViewController.swift in Sources */,
+				EA767BFE2119B09600039A5C /* HalalBytes.xcdatamodeld in Sources */,
 				EABB8C7F21185BF8009EBC0D /* FashionTransition.swift in Sources */,
 				EA934E8820D905250075B865 /* TCPickerView.swift in Sources */,
 				EA94A82B211843E2001CA601 /* RegistrationViewController.swift in Sources */,
@@ -901,6 +905,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EA767BFC2119B09600039A5C /* HalalBytes.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EA767BFD2119B09600039A5C /* Model.xcdatamodel */,
+			);
+			currentVersion = EA767BFD2119B09600039A5C /* Model.xcdatamodel */;
+			path = HalalBytes.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3C7AAA1C208C1B3600C23E07 /* Project object */;
 }

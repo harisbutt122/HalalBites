@@ -12,7 +12,8 @@ import MapKit
 import CoreLocation
 import TweeTextField
 import TransitionButton
-
+import Alamofire
+import CoreData
 extension String {
     
     var isValidEmail1: Bool {
@@ -130,14 +131,54 @@ let loginButton = FBSDKLoginButton()
         let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
         backgroundQueue.async(execute: {
             
-            sleep(3) // 3: Do your networking task or background work here.
-            
+            sleep(3)
+            let HeadersParameters = ["Accept":"application/json"]
+            let bodyParams = ["email":self.emailTextField.text,"password":self.PasswordTextField.text] as [String : Any]
+            Alamofire.request(LoginPasswordAPI  , method: .post, parameters: bodyParams, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON(completionHandler: { (response) in
+                print(response.result.value)
+                let json = JSON(response.result.value)
+                let Refresh_Token = json["refresh_token"].string
+                self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
+                let context =   self.appdelegate.persistentContainer.viewContext
+                
+              let entity = NSEntityDescription.entity(forEntityName: "User", in: context)
+                let newUser = NSManagedObject(entity: entity!, insertInto: context)
+                newUser.setValue(self.emailTextField.text!, forKey: "email")
+                newUser.setValue(self.PasswordTextField.text!, forKey: "password")
+                newUser.setValue(self.PasswordTextField.text!, forKey: "refreshtoken")
+               
+                do {
+                    try context.save()
+                } catch {
+                    print("Failed saving")
+                }
+                let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                //request.predicate = NSPredicate(format: "age = %@", "12")
+                request.returnsObjectsAsFaults = false
+                do {
+                    let result = try context.fetch(request)
+                    for data in result as! [NSManagedObject] {
+                        print(data.value(forKey: "email") as! String)
+                        print(data.value(forKey: "password") as! String)
+                    }
+                    
+                } catch {
+                    
+                    print("Failed")
+                }
+                let controller = self.storyboard?.instantiateViewController(withIdentifier: "homeview")
+                
+                self.present(controller!, animated: true, completion: nil)
+            })// 3: Do your networking task or background work here.
+        
             DispatchQueue.main.async(execute: { () -> Void in
                 // 4: Stop the animation, here you have three options for the `animationStyle` property:
                 // .expand: useful when the task has been compeletd successfully and you want to expand the button and transit to another view controller in the completion callback
                 // .shake: when you want to reflect to the user that the task did not complete successfly
                 // .normal
-                self.SignInButton.stopAnimation(animationStyle: .shake, completion: {
+                self.SignInButton.stopAnimation(animationStyle: .expand, completion:
+                    {
+                      
                     print("harris")
                 })
             })

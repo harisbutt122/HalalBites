@@ -8,7 +8,7 @@
 
 import UIKit
 import FBSDKCoreKit
-
+import CoreData
 import SVProgressHUD
 import Alamofire
 import MapKit
@@ -41,6 +41,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         // Override point for customization after application launch.
 //        let twitterLogoBezierPath = SPBezierPathFigure.logos.logoTwitter()
 //        SPLaunchAnimation.asTwitter(withIcon: twitterLogoBezierPath, onWindow: self.window!)
+        let context =   persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        //request.predicate = NSPredicate(format: "age = %@", "12")
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request)
+            for data in result as! [NSManagedObject] {
+                if data.value(forKey: "email") as! String != nil && data.value(forKey: "password") as! String != nil{
+                    
+                    let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    uistoryboard.instantiateInitialViewController()
+                    let homeviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "homeview")
+                    if let windows = self.window{
+                        windows.rootViewController = homeviewcontroller
+                        
+                    }
+                    print(data.value(forKey: "email") as! String)
+                    print(data.value(forKey: "password") as! String)
+                }
+               
+            }
+            
+        } catch {
+            
+            print("Failed")
+        }
         locationManager.delegate = self
         
         locationManager.requestWhenInUseAuthorization()
@@ -51,19 +77,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.gradient)
         IQKeyboardManager.shared.enable = true
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-//        if FBSDKAccessToken.current() != nil{
-//            
-//            
-//            let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            uistoryboard.instantiateInitialViewController()
-//            let homeviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "homeview")
-//            if let windows = self.window{
-//                windows.rootViewController = homeviewcontroller
-//                
-//            }
-//
-//        }
-        
+ 
         return true
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -115,7 +129,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+         self.saveContext()
     }
-
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "HalalBytes")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+    
+    // MARK: - Core Data Saving support
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                // Replace this implementation with code to handle the error appropriately.
+                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
 }
 
