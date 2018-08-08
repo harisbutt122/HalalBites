@@ -10,6 +10,7 @@ import UIKit
 import TransitionButton
 import Alamofire
 import PMAlertController
+import CoreData
 class RegistrationViewController: UIViewController {
 
     @IBOutlet weak var RegisterButton: TransitionButton!
@@ -17,6 +18,8 @@ class RegistrationViewController: UIViewController {
     @IBOutlet weak var Email: TJTextField!
     @IBOutlet weak var Name: TJTextField!
     @IBOutlet weak var Password: TJTextField!
+      var isOverCurrentContextTransition = false
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,7 +62,32 @@ class RegistrationViewController: UIViewController {
                             
                             
                             alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-                               
+                                let context =   self.appdelegate.persistentContainer.viewContext
+                                
+                                let entity = NSEntityDescription.entity(forEntityName: "User", in: context)
+                                let newUser = NSManagedObject(entity: entity!, insertInto: context)
+                                newUser.setValue(self.Name.text!, forKey: "name")
+                           
+                                
+                                do {
+                                    try context.save()
+                                } catch {
+                                    print("Failed saving")
+                                }
+                                let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                                //request.predicate = NSPredicate(format: "age = %@", "12")
+                                request.returnsObjectsAsFaults = false
+                                do {
+                                    let result = try context.fetch(request)
+                                    for data in result as! [NSManagedObject] {
+                                        print(data.value(forKey: "name") as! String)
+                                      
+                                    }
+                                    
+                                } catch {
+                                    
+                                    print("Failed")
+                                }
                                 let controller = self.storyboard?.instantiateViewController(withIdentifier: "loginView") as! LoginViewController
                             
                                 self.present(controller, animated: true, completion: nil)
@@ -76,6 +104,7 @@ class RegistrationViewController: UIViewController {
                             
                             
                             alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                                
                                 print("Capture action OK")
                             }))
                             
@@ -108,7 +137,19 @@ class RegistrationViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if isOverCurrentContextTransition {
+            segue.destination.setCustomModalTransition(customModalTransition: AlphaByStepTransition(), inPresentationStyle: .overCurrentContext)
+        } else {
+            segue.destination.customModalTransition = FashionTransition()
+        }
+    }
     
+    @IBOutlet weak var showButton: UIButton! {
+        didSet {
+            showButton.underlineCurrentTitle()
+        }
+    }
     
 
 }

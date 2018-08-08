@@ -1,25 +1,25 @@
 //
-//  QRCodeViewController.swift
+//  tabBarViewController.swift
 //  HalalBytes
 //
-//  Created by harisbutt on 7/23/18.
+//  Created by harisbutt on 8/8/18.
 //  Copyright © 2018 Ammar Waheed. All rights reserved.
 //
 
 import UIKit
 
-class QRCodeViewController: UIViewController {
+class tabBarViewController: UITabBarController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        // Do any additional setup after loading the view.
+//    }
+//
+//    override func didReceiveMemoryWarning() {
+//        super.didReceiveMemoryWarning()
+//        // Dispose of any resources that can be recreated.
+//    }
     
 
     /*

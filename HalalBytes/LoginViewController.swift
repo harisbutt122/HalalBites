@@ -14,7 +14,11 @@ import TweeTextField
 import TransitionButton
 import Alamofire
 import CoreData
+import PMAlertController
+import RAMAnimatedTabBarController
+
 extension String {
+    
     
     var isValidEmail1: Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -67,6 +71,7 @@ let loginButton = FBSDKLoginButton()
 //        
 //        
 //        loginButton.delegate = self as! FBSDKLoginButtonDelegate
+     
 
     }
    
@@ -105,11 +110,23 @@ let loginButton = FBSDKLoginButton()
     }
     
     @IBAction private func emailEndEditing(_ sender: TweeAttributedTextField) {
-        if let emailText = sender.text, emailText.isValidEmail1 == true {
-            return
+        if sender.tag == 0{
+            if let emailText = sender.text, emailText.isValidEmail1 == true {
+                return
+            }
+            
+            sender.showInfo("Email address is incorrect. Check it out")
+            
+        }else {
+            
+            if let emailText = sender.text, emailText.isValidEmail1 == true {
+                return
+            }
+            
+         
+            
         }
         
-        sender.showInfo("Email address is incorrect. Check it out")
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if isOverCurrentContextTransition {
@@ -126,49 +143,161 @@ let loginButton = FBSDKLoginButton()
     }
 
     @IBAction func SignInButton(_ sender: Any) {
+        var email = self.emailTextField.text
+        var password = self.PasswordTextField.text
         SignInButton.startAnimation() // 2: Then start the animation when the user tap the button
         let qualityOfServiceClass = DispatchQoS.QoSClass.background
         let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
         backgroundQueue.async(execute: {
+ 
             
             sleep(3)
             let HeadersParameters = ["Accept":"application/json"]
-            let bodyParams = ["email":self.emailTextField.text,"password":self.PasswordTextField.text] as [String : Any]
+            let bodyParams = ["email":email!,"password":password!] as [String : Any]
             Alamofire.request(LoginPasswordAPI  , method: .post, parameters: bodyParams, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON(completionHandler: { (response) in
                 print(response.result.value)
                 let json = JSON(response.result.value)
-                let Refresh_Token = json["refresh_token"].string
-                self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
-                let context =   self.appdelegate.persistentContainer.viewContext
-                
-              let entity = NSEntityDescription.entity(forEntityName: "User", in: context)
-                let newUser = NSManagedObject(entity: entity!, insertInto: context)
-                newUser.setValue(self.emailTextField.text!, forKey: "email")
-                newUser.setValue(self.PasswordTextField.text!, forKey: "password")
-                newUser.setValue(self.PasswordTextField.text!, forKey: "refreshtoken")
-               
-                do {
-                    try context.save()
-                } catch {
-                    print("Failed saving")
-                }
-                let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                //request.predicate = NSPredicate(format: "age = %@", "12")
-                request.returnsObjectsAsFaults = false
-                do {
-                    let result = try context.fetch(request)
-                    for data in result as! [NSManagedObject] {
-                        print(data.value(forKey: "email") as! String)
-                        print(data.value(forKey: "password") as! String)
+                let message = json["message"].string
+                if message == "Incorrect email and password combination given."{
+                    
+                    let alertVC = PMAlertController(title: "" , description: message! as! String, image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        let context = delegate.persistentContainer.viewContext
+                        
+                        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+                        
+                        do {
+                            try context.execute(deleteRequest)
+                            try context.save()
+                            print("delete")
+                        } catch {
+                            print ("There was an error")
+                        }
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    self.SignInButton.stopAnimation(animationStyle: .shake, completion:
+                        {
+                            
+                            print("harris")
+                    })
+                    
+                }else if message == "Please provide an email."{
+                    
+                    let alertVC = PMAlertController(title: "" , description: message! as! String, image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        let context = delegate.persistentContainer.viewContext
+                        
+                        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+                        
+                        do {
+                            try context.execute(deleteRequest)
+                            try context.save()
+                            print("delete")
+                        } catch {
+                            print ("There was an error")
+                        }
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    
+                    self.SignInButton.stopAnimation(animationStyle: .shake, completion:
+                        {
+                            
+                            print("harris")
+                    })
+                }else if message == "Please provide a password." {
+                    
+                    let alertVC = PMAlertController(title: "" , description: message! as! String, image:UIImage(named: "halal"), style: .alert)
+                    
+                    
+                    
+                    alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+                        let delegate = UIApplication.shared.delegate as! AppDelegate
+                        let context = delegate.persistentContainer.viewContext
+                        
+                        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+                        
+                        do {
+                            try context.execute(deleteRequest)
+                            try context.save()
+                            print("delete")
+                        } catch {
+                            print ("There was an error")
+                        }
+                        print("Capture action OK")
+                    }))
+                    
+                    
+                    
+                    self.present(alertVC, animated: true, completion: nil)
+                    self.SignInButton.stopAnimation(animationStyle: .shake, completion:
+                        {
+                            
+                            print("harris")
+                    })
+                    
+                }else {
+                    
+                    
+                    
+                    let Refresh_Token = json["refresh_token"].string
+                    self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
+                    
+                    let context =   self.appdelegate.persistentContainer.viewContext
+                    
+                    let entity = NSEntityDescription.entity(forEntityName: "User", in: context)
+                    let newUser = NSManagedObject(entity: entity!, insertInto: context)
+                    newUser.setValue(self.emailTextField.text!, forKey: "email")
+                    newUser.setValue(self.PasswordTextField.text!, forKey: "password")
+                    newUser.setValue(self.PasswordTextField.text!, forKey: "refreshtoken")
+                    
+                    do {
+                        try context.save()
+                    } catch {
+                        print("Failed saving")
                     }
-                    
-                } catch {
-                    
-                    print("Failed")
-                }
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "homeview")
+                    let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+                    //request.predicate = NSPredicate(format: "age = %@", "12")
+                    request.returnsObjectsAsFaults = false
+                    do {
+                        let result = try context.fetch(request)
+                        for data in result as! [NSManagedObject] {
+                            print(data.value(forKey: "email") as! String)
+                            print(data.value(forKey: "password") as! String)
+                        }
+                        
+                    } catch {
+                        
+                        print("Failed")
+                    }
+                    self.SignInButton.stopAnimation(animationStyle: .normal, completion:
+                                        {
+                                            let controller = self.storyboard?.instantiateViewController(withIdentifier: "homeview")
+                                            
+                                            self.present(controller!, animated: true, completion: nil)
+                                        print("harris")
+                                    })
                 
-                self.present(controller!, animated: true, completion: nil)
+                }
+             
             })// 3: Do your networking task or background work here.
         
             DispatchQueue.main.async(execute: { () -> Void in
@@ -176,11 +305,11 @@ let loginButton = FBSDKLoginButton()
                 // .expand: useful when the task has been compeletd successfully and you want to expand the button and transit to another view controller in the completion callback
                 // .shake: when you want to reflect to the user that the task did not complete successfly
                 // .normal
-                self.SignInButton.stopAnimation(animationStyle: .expand, completion:
-                    {
-                      
-                    print("harris")
-                })
+//                self.SignInButton.stopAnimation(animationStyle: .expand, completion:
+//                    {
+//
+//                    print("harris")
+//                })
             })
         })
     }

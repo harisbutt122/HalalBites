@@ -14,6 +14,7 @@ import BubbleTransition
 import MapKit
 import PMAlertController
 import CoreData
+import NotificationBannerSwift
 
 class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
@@ -49,7 +50,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
     override func viewDidLoad() {
        
         super.viewDidLoad()
-    
+       
         let pi = 3.14159
         
         let text = String(format: "%.0f", arguments: [pi])
@@ -82,8 +83,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
 //searchController.isActive = false
         Cuisines()
    FacebookGraphRequest()
-        
-
+       
     }
  
     func Cuisines(){
@@ -110,8 +110,26 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
         
     }
     func FacebookGraphRequest(){
-        
-//        SVProgressHUD.show(withStatus: "Biting")
+       
+        SVProgressHUD.show(withStatus: "Biting")
+  
+        let context =   self.appdelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        //request.predicate = NSPredicate(format: "age = %@", "12")
+        request.returnsObjectsAsFaults = false
+        do {
+            let result = try context.fetch(request)
+            for data in result as! [NSManagedObject] {
+                print(data.value(forKey: "email") as! String)
+                print(data.value(forKey: "password") as! String)
+               
+                GetLoginAPI_FetchData(params: ["email":data.value(forKey: "email") as! String,"password":data.value(forKey: "password") as! String])
+            }
+            
+        } catch {
+            
+            print("Failed")
+        }
 //        GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
 //        let userID = FBSDKAccessToken.current().userID
 //        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
@@ -215,68 +233,68 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
 
    
 
-//    func GetLoginAPI_FetchData(params: [String:String]) {
-//
-//        let urlComp = NSURLComponents(string: LoginAPI)!
-//
-//        var items = [URLQueryItem]()
-//
-//        for (key,value) in params {
-//            items.append(URLQueryItem(name: key, value: value))
-//        }
-//
-//        items = items.filter{!$0.name.isEmpty}
-//
-//        if !items.isEmpty {
-//            urlComp.queryItems = items
-//        }
-//
-//        var urlRequest = URLRequest(url: urlComp.url!)
-//        urlRequest.httpMethod = "POST"
-//        let config = URLSessionConfiguration.default
-//        let session = URLSession(configuration: config)
-//
-//        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-//            if error != nil
-//            {
-//                print("error=\(error)")
-//                return
-//            }
-//
-//            // Print out response string
-//            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-//            //                    print("responseString = \(responseString)")
-//
-//
-//            // Convert server json response to NSDictionary
-//            do {
-//                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-//
-//                    // Print out dictionary
-//
-//                    let Refresh_Token = convertedJsonIntoDict["refresh_token"] as! String
-//                    let User_ID = convertedJsonIntoDict["user_id"] as! Int
-//
-//                   self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
-//                    self.appdelegate.User_ID = User_ID
-//                    print(User_ID)
-//                    self.GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken!])
-//
-//
-//                }
-//            } catch let error as NSError {
-//                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
-//                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
-//                alert.addAction(okay)
-//                self.present(alert, animated: true, completion: nil)
-//                   SVProgressHUD.dismiss()
-//                 self.CollectionVIew.reloadData()
-//                print(error.localizedDescription)
-//            }
-//        })
-//        task.resume()
-//    }
-//
+    func GetLoginAPI_FetchData(params: [String:String]) {
+
+        let urlComp = NSURLComponents(string: LoginPasswordAPI)!
+
+        var items = [URLQueryItem]()
+
+        for (key,value) in params {
+            items.append(URLQueryItem(name: key, value: value))
+        }
+
+        items = items.filter{!$0.name.isEmpty}
+
+        if !items.isEmpty {
+            urlComp.queryItems = items
+        }
+
+        var urlRequest = URLRequest(url: urlComp.url!)
+        urlRequest.httpMethod = "POST"
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+            if error != nil
+            {
+                print("error=\(error)")
+                return
+            }
+
+            // Print out response string
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            //                    print("responseString = \(responseString)")
+
+
+            // Convert server json response to NSDictionary
+            do {
+                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+
+                    // Print out dictionary
+
+                    let Refresh_Token = convertedJsonIntoDict["refresh_token"] as! String
+                    let User_ID = convertedJsonIntoDict["user_id"] as! Int
+
+                   self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
+                    self.appdelegate.User_ID = User_ID
+                    print(User_ID)
+                    self.GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken!])
+
+
+                }
+            } catch let error as NSError {
+                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
+                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+                alert.addAction(okay)
+                self.present(alert, animated: true, completion: nil)
+                   SVProgressHUD.dismiss()
+                 self.CollectionVIew.reloadData()
+                print(error.localizedDescription)
+            }
+        })
+        task.resume()
+    }
+
     func GetRefreshTokenAPI_FetchData(params: [String:String]) {
       
         let urlComp = NSURLComponents(string: RefreshTokenAPI)!
@@ -921,59 +939,63 @@ extension HomeViewController: MGPScannerViewControllerDelegate {
         switch type {
         case .email:
             
-            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            
-            
-            
-            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-                print("Capture action OK")
-            }))
-            
-            
-            
-            self.present(alertVC, animated: true, completion: nil)
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
+            print(text)
             
         case .link:
-            SVProgressHUD.show(withStatus: "Biting")
-            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            
-            
-            
-            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-                print("Capture action OK")
-            }))
-            
-            
-            
-            self.present(alertVC, animated: true, completion: nil)
+//            SVProgressHUD.show(withStatus: "Biting")
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
+            print(text)
           
         case .number:
            
-            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            
-            
-            
-            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-                print("Capture action OK")
-            }))
-            
-            
-            
-            self.present(alertVC, animated: true, completion: nil)
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
+            print(text)
       
         case .text:
           
-            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            
-            
-            
-            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-                print("Capture action OK")
-            }))
-            
-            
-            
-            self.present(alertVC, animated: true, completion: nil)
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
+            print(text)
         
         case .other:
             let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
