@@ -19,6 +19,7 @@ let QrcodeAPI = "https://www.halalbites.org/api/deal/details/"
 let ProcessAPI = "https://www.halalbites.org/api/deal/process"
 let RegisterAPI = "https://www.halalbites.org/api/register-user"
 let LoginPasswordAPI = "https://www.halalbites.org/api/login-password"
+let NologinPasswordAPI = "https://www.halalbites.org/api/home-data-no-login"
 
 struct HeaderParamters {
     

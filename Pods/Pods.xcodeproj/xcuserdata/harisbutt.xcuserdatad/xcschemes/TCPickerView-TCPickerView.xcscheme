@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "11FEE3B97D5CEFB321310ACA38B0C1A6"
+               BlueprintIdentifier = "6FCB4DD6C9DB47192F3C35520AB01F88"
                BuildableName = "TCPickerView.bundle"
                BlueprintName = "TCPickerView-TCPickerView"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "11FEE3B97D5CEFB321310ACA38B0C1A6"
+            BlueprintIdentifier = "6FCB4DD6C9DB47192F3C35520AB01F88"
             BuildableName = "TCPickerView.bundle"
             BlueprintName = "TCPickerView-TCPickerView"
             ReferencedContainer = "container:Pods.xcodeproj">

@@ -20,8 +20,7 @@ pod 'RAMAnimatedTabBarController'
 pod 'TweeTextField'
 pod 'TransitionButton'
 pod 'AZTransitions'
-pod 'NotificationBannerSwift'
-
+pod 'AMScrollingNavbar'
 
 
   target 'HalalBytesTests' do

@@ -9,7 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import MapKit
-import CoreLocation
+//import CoreLocation
 import TweeTextField
 import TransitionButton
 import Alamofire
@@ -312,6 +312,12 @@ let loginButton = FBSDKLoginButton()
 //                })
             })
         })
+    }
+    @IBAction func ContinueWIthoutLogin(_ sender: Any) {
+  self.appdelegate.LoginAppID = 1
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "secondView")
+        
+        self.present(controller!, animated: true, completion: nil)
     }
 }
 

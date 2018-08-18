@@ -24,9 +24,11 @@
 		E354E400F7AB9D93DE04D84F /* Pods_HalalBytesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6557A66B6CFD5452A58302 /* Pods_HalalBytesUITests.framework */; };
 		EA135C7120C8066C0014BD66 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA135C7020C8066C0014BD66 /* SwiftyJSON.swift */; };
 		EA15864B20C9438700AEE4B8 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA15864A20C9438700AEE4B8 /* Contants.swift */; };
+		EA26584B211DAB5C00380E36 /* ZFRippleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26584A211DAB5C00380E36 /* ZFRippleButton.swift */; };
 		EA55DBD020EE50BA00F876F9 /* AddRestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */; };
 		EA6CA3B421060148009D68EF /* MGPScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6CA3B321060148009D68EF /* MGPScannerViewController.swift */; };
 		EA767BFE2119B09600039A5C /* HalalBytes.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EA767BFC2119B09600039A5C /* HalalBytes.xcdatamodeld */; };
+		EA8B28712128614400CFC8AA /* SecondHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B28702128614400CFC8AA /* SecondHomeViewController.swift */; };
 		EA934E8820D905250075B865 /* TCPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8620D905250075B865 /* TCPickerView.swift */; };
 		EA934E8920D905250075B865 /* TCPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8720D905250075B865 /* TCPickerTableViewCell.swift */; };
 		EA934E8C20D909890075B865 /* ExampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA934E8A20D909880075B865 /* ExampleTableViewCell.swift */; };
@@ -88,9 +90,11 @@
 		D1F6BB305E5248400456C125 /* Pods-HalalBytesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HalalBytesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HalalBytesTests/Pods-HalalBytesTests.release.xcconfig"; sourceTree = "<group>"; };
 		EA135C7020C8066C0014BD66 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		EA15864A20C9438700AEE4B8 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
+		EA26584A211DAB5C00380E36 /* ZFRippleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZFRippleButton.swift; sourceTree = "<group>"; };
 		EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRestaurantViewController.swift; sourceTree = "<group>"; };
 		EA6CA3B321060148009D68EF /* MGPScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGPScannerViewController.swift; sourceTree = "<group>"; };
 		EA767BFD2119B09600039A5C /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		EA8B28702128614400CFC8AA /* SecondHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondHomeViewController.swift; sourceTree = "<group>"; };
 		EA934E8620D905250075B865 /* TCPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerView.swift; sourceTree = "<group>"; };
 		EA934E8720D905250075B865 /* TCPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPickerTableViewCell.swift; sourceTree = "<group>"; };
 		EA934E8A20D909880075B865 /* ExampleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleTableViewCell.swift; sourceTree = "<group>"; };
@@ -173,12 +177,14 @@
 				3C7AAA29208C1B3700C23E07 /* LoginViewController.swift */,
 				EA94A82A211843E2001CA601 /* RegistrationViewController.swift */,
 				3C7AAA57208CB14100C23E07 /* HomeViewController.swift */,
+				EA8B28702128614400CFC8AA /* SecondHomeViewController.swift */,
 				EA55DBCF20EE50BA00F876F9 /* AddRestaurantViewController.swift */,
 				3C7AAA5B208CB17700C23E07 /* AccountViewController.swift */,
 				3C7AAA2B208C1B3700C23E07 /* Main.storyboard */,
 				EAF25F72211AE58300683AA2 /* tabBarViewController.swift */,
 				3C00BBBB20F0B13100351BB3 /* CusinesTableViewCell.swift */,
 				FE0C37E220D027E3005EE12F /* RestaurantsDetailsViewController.swift */,
+				EA26584A211DAB5C00380E36 /* ZFRippleButton.swift */,
 				3C7AAA55208CAB5A00C23E07 /* Assets.xcassets */,
 				3C7AAA5D208CBF0D00C23E07 /* Restaurant data.swift */,
 				3C7AAA30208C1B3800C23E07 /* LaunchScreen.storyboard */,
@@ -474,6 +480,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-HalalBytes/Pods-HalalBytes-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AMScrollingNavbar/AMScrollingNavbar.framework",
 				"${BUILT_PRODUCTS_DIR}/AZTransitions/AZTransitions.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AnimatedMaskLabel/AnimatedMaskLabel.framework",
@@ -483,18 +490,16 @@
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
-				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/PMAlertController/PMAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/RAMAnimatedTabBarController/RAMAnimatedTabBarController.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TCPickerView/TCPickerView.framework",
 				"${BUILT_PRODUCTS_DIR}/TransitionButton/TransitionButton.framework",
 				"${BUILT_PRODUCTS_DIR}/TweeTextField/TweeTextField.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMScrollingNavbar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AZTransitions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AnimatedMaskLabel.framework",
@@ -504,12 +509,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMAlertController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RAMAnimatedTabBarController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TCPickerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TransitionButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweeTextField.framework",
@@ -571,9 +573,11 @@
 				EA6CA3B421060148009D68EF /* MGPScannerViewController.swift in Sources */,
 				EA934E8920D905250075B865 /* TCPickerTableViewCell.swift in Sources */,
 				3C7AAA5E208CBF0D00C23E07 /* Restaurant data.swift in Sources */,
+				EA26584B211DAB5C00380E36 /* ZFRippleButton.swift in Sources */,
 				3C7AAA58208CB14100C23E07 /* HomeViewController.swift in Sources */,
 				EA135C7120C8066C0014BD66 /* SwiftyJSON.swift in Sources */,
 				EA94A82921183B88001CA601 /* TJTextField.swift in Sources */,
+				EA8B28712128614400CFC8AA /* SecondHomeViewController.swift in Sources */,
 				EA15864B20C9438700AEE4B8 /* Contants.swift in Sources */,
 				3C7AAA62208F86AC00C23E07 /* RestaurantCollectionViewCell.swift in Sources */,
 				EA934E8C20D909890075B865 /* ExampleTableViewCell.swift in Sources */,

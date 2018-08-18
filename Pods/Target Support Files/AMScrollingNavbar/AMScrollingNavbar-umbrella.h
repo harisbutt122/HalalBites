@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double JTMaterialTransitionVersionNumber;
-FOUNDATION_EXPORT const unsigned char JTMaterialTransitionVersionString[];
+FOUNDATION_EXPORT double AMScrollingNavbarVersionNumber;
+FOUNDATION_EXPORT const unsigned char AMScrollingNavbarVersionString[];
 

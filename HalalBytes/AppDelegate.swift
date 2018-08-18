@@ -27,18 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     var RestaurantHours_Array2 = [RatingOpenNow]()
     var ids = [Int]()
     var didselect_Number:Int!
-   
+    var LoginAppID:Int!
     var Current_Latitude:Double!
     var current_Longitude:Double!
     var User_ID:Int!
      var HoursAPIArray = [String]()
     var locationManager = CLLocationManager()
     
+    
     var myLocation:CLLocationCoordinate2D?
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+//         Override point for customization after application launch.
 //        let twitterLogoBezierPath = SPBezierPathFigure.logos.logoTwitter()
 //        SPLaunchAnimation.asTwitter(withIcon: twitterLogoBezierPath, onWindow: self.window!)
         let context =   persistentContainer.viewContext
@@ -49,25 +50,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
             let result = try context.fetch(request)
             for data in result as! [NSManagedObject] {
                 if data.value(forKey: "email") as! String != nil && data.value(forKey: "password") as! String != nil{
-                    
+    LoginAppID = 1
                     let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     uistoryboard.instantiateInitialViewController()
                     let homeviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "homeview")
                     if let windows = self.window{
                         windows.rootViewController = homeviewcontroller
-                        
+
                     }
                     print(data.value(forKey: "email") as! String)
                     print(data.value(forKey: "password") as! String)
                 }
-               
+
             }
-            
+
         } catch {
-            
+
             print("Failed")
         }
         locationManager.delegate = self
+    
         
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -91,6 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         
         self.Current_Latitude = userLocation1?.coordinate.latitude
         self.current_Longitude = userLocation1?.coordinate.longitude
+        
         print(self.Current_Latitude)
         
         print(self.current_Longitude)

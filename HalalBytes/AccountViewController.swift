@@ -11,9 +11,11 @@ import FBSDKCoreKit
 import CoreData
 class AccountViewController: UIViewController {
 
+    @IBOutlet weak var LogoutButton: UIView!
+let appdelegate = UIApplication.shared.delegate as! AppDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
-
+     
         // Do any additional setup after loading the view.
     }
 
@@ -22,7 +24,7 @@ class AccountViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-let appdelegate = UIApplication.shared.delegate as! AppDelegate
+
     @IBAction func Logout(_ sender: Any) {
 //        do {
 //         let alert = UIAlertController(title: "Logout", message: "Are You Sure", preferredStyle: .actionSheet)
@@ -56,6 +58,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
                         self.appdelegate.RestaurantsHours_Array.removeAll()
                         self.appdelegate.HoursAPIArray.removeAll()
                         self.appdelegate.ids.removeAll()
+                        self.appdelegate.LoginAppID = 2
                         let delegate = UIApplication.shared.delegate as! AppDelegate
                         let context = delegate.persistentContainer.viewContext
                         
@@ -64,6 +67,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
                         
                         do {
                             try context.execute(deleteRequest)
+                            
                             try context.save()
                             print("delete")
                         } catch {

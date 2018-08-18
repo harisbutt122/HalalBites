@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AMScrollingNavbar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>AZTransitions.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -49,16 +54,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>MarqueeLabel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>NotificationBannerSwift.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>PMAlertController-PMAlertController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -90,11 +85,6 @@
 			<false/>
 		</dict>
 		<key>SVProgressHUD.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>SnapKit.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

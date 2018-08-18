@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.2)
+  - AMScrollingNavbar (5.0.2)
   - AnimatedMaskLabel (1.0.1)
   - AZTransitions (0.22)
   - Bolts (1.9.0):
@@ -16,13 +17,8 @@ PODS:
   - FBSDKShareKit (4.31.1):
     - FBSDKCoreKit (~> 4.31.1)
   - IQKeyboardManagerSwift (6.0.3)
-  - MarqueeLabel/Swift (3.1.4)
-  - NotificationBannerSwift (1.6.2):
-    - MarqueeLabel/Swift
-    - SnapKit (~> 4.0)
   - PMAlertController (3.4.0)
   - RAMAnimatedTabBarController (3.2.0)
-  - SnapKit (4.0.0)
   - SVProgressHUD (2.2.5)
   - TCPickerView (0.1.9)
   - TransitionButton (0.4.0)
@@ -30,6 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - AMScrollingNavbar
   - AnimatedMaskLabel
   - AZTransitions
   - BubbleTransition (~> 3.0.0)
@@ -37,7 +34,6 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - IQKeyboardManagerSwift
-  - NotificationBannerSwift
   - PMAlertController
   - RAMAnimatedTabBarController
   - SVProgressHUD
@@ -47,6 +43,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AMScrollingNavbar: d941641a4b05c329e6050ab19e54105ba3785471
   AnimatedMaskLabel: 995f1cdcae80700be58126d70e0fe05619d86b77
   AZTransitions: 84fb95a278aedcba3c162443491544a5b9c485eb
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -55,16 +52,13 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 99797ac39252fef6f72600b886f6ee60b4b29cab
   FBSDKShareKit: e640c41c9fcd61929eeb3d0c21ad335103e7cb62
   IQKeyboardManagerSwift: 04e8679f85e496bb2c474eeb9284052f1b3c391c
-  MarqueeLabel: bf768455fe88d427f71476ebb23f9092b660f40b
-  NotificationBannerSwift: 4eceb2add9d5eaa0596c63d49690b4d6476e74ec
   PMAlertController: efb781925d741d50e0200018a00c53cecb8b4910
   RAMAnimatedTabBarController: 0499157f67053a21bcccb52a25dd3c6ecdbfb4f6
-  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TCPickerView: 4bacd1f81121b3a12ff4624da657e3dfd1738383
   TransitionButton: d271030914c84a00b54b4d983446944d2875e7ba
   TweeTextField: 367d1393434018cfc8e40ad76087855b73253d99
 
-PODFILE CHECKSUM: 6ecd779f92f56145c1fb8c38d83057a1b2cd7553
+PODFILE CHECKSUM: dbaef2de741da4b99a294385f4b261b332a28146
 
 COCOAPODS: 1.4.0
