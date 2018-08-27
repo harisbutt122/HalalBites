@@ -21,6 +21,7 @@ pod 'TweeTextField'
 pod 'TransitionButton'
 pod 'AZTransitions'
 pod 'AMScrollingNavbar'
+pod 'CNPPopupController'
 
 
   target 'HalalBytesTests' do

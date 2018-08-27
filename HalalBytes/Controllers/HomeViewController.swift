@@ -1,8 +1,8 @@
 //
-//  SecondHomeViewController.swift
+//  HomeViewController.swift
 //  HalalBytes
 //
-//  Created by harisbutt on 8/18/18.
+//  Created by Ammar Waheed on 22/04/2018.
 //  Copyright © 2018 Ammar Waheed. All rights reserved.
 //
 
@@ -17,9 +17,9 @@ import CoreData
 import AMScrollingNavbar
 import CoreLocation
 
-class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
+class HomeViewController: UIViewController,UISearchControllerDelegate, UISearchBarDelegate,CLLocationManagerDelegate {
     @IBOutlet weak var TableView: UITableView!
-    
+   
     @IBOutlet weak var SecondView: UIView!
     @IBOutlet weak var AddRestaurantButton: UIButton!
     @IBOutlet weak var QrCodeButton: UIButton!
@@ -32,173 +32,174 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
     var Name:String!
     var Email:String!
     var url:String!
-    var CuisinesArray = [String]()
+   var CuisinesArray = [String]()
     var Cuisines_ID = [Int]()
     var apiCalls = 0
     var distancValue = [String]()
     
     var RestaurantsImages_Array = [String]()
     var HoursAPICount = 0
-    var refresher: UIRefreshControl!
+     var refresher: UIRefreshControl!
     var filtered:[restaurantsDetails] = []
     var NameArray = [String]()
     var searchActive : Bool = false
     let searchController = UISearchController(searchResultsController: nil)
-    let appdelegate = UIApplication.shared.delegate as! AppDelegate
-    let transition = BubbleTransition()
+let appdelegate = UIApplication.shared.delegate as! AppDelegate
+      let transition = BubbleTransition()
     var locationManager = CLLocationManager()
     var searchString:String!
-    
+ 
     @IBOutlet weak var restaurantCollectionView: UICollectionView!
     
     override func viewDidLoad() {
-        
+       
         super.viewDidLoad()
-        
-        //      print("haris")
-        
-        //searchController.isActive = false
+       
+//      print("haris")
+
+//searchController.isActive = false
         print(self.appdelegate.LoginAppID)
         print(self.appdelegate.Current_Latitude, self.appdelegate.current_Longitude)
-        //        if self.appdelegate.LoginAppID == 1{
-                    self.CollectionVIew.delegate = self
-                    self.CollectionVIew.dataSource = self
+        let pi = 3.14159
         
-                    print("HAris")
+        let text = String(format: "%.0f", arguments: [pi])
+        Cuisines()
         
-                            SVProgressHUD.show()
-                     let url = "\(NologinPasswordAPI)/5/5/\(self.appdelegate.Current_Latitude!)/\(self.appdelegate.current_Longitude!)/20"
-                            Alamofire.request(url).responseJSON { (response) in
+        print(text)
+        print(self.appdelegate.Current_Latitude)
+        print(self.appdelegate.current_Longitude)
+        print("\(HomeDataAPI)/5/5/\(self.appdelegate.Current_Latitude)/\(self.appdelegate.current_Longitude)/20")
+        refresher = UIRefreshControl()
+        refresher.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refresher.addTarget(self, action: #selector(HomeViewController.populate), for: UIControlEvents.valueChanged)
+        CollectionVIew.addSubview(refresher)
+        self.CollectionVIew.delegate = self
+        self.CollectionVIew.dataSource = self
+        self.TableView.delegate = self
+        self.TableView.dataSource = self
+        self.searchController.searchResultsUpdater = self
+        self.searchController.delegate = self
+        self.searchController.searchBar.delegate = self
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Restaurants"
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.becomeFirstResponder()
+        self.navigationItem.titleView = searchController.searchBar
         
-                                let Distionary1 =  JSON(response.result.value)
-                                let Restaurants = Distionary1["restaurants"]
-                                let objects = Restaurants.arrayValue
-        //                                                print(objects)
-                                for RestaurantsDetails in objects{
-                                    let uid = RestaurantsDetails["id"].number
-                                    let name = RestaurantsDetails["name"].string
-                                    let cusines = RestaurantsDetails["cuisines"].arrayValue
-                                    let halalnesslevel = RestaurantsDetails["halalness_level"].string
-                                    let suburb = RestaurantsDetails["suburb"].string
-                                    let images = RestaurantsDetails["picture_path"].string
-                                    let phonenumber = RestaurantsDetails["phone_number"].string
-                                    let Address = RestaurantsDetails["location"].string
-                                    let latitude = RestaurantsDetails["latitude"].double
-                                    let longitude = RestaurantsDetails["longitude"].double
-                                    let distance = RestaurantsDetails["distance"].double
-                                    let Google_Data = JSON(RestaurantsDetails["google_data"])
-                                    guard let Rating = Google_Data["rating"].double else{return}
-                                    guard let OpenClose = Google_Data["open_now"].bool else{return}
-                                    print(Rating)
-                                    print(OpenClose)
-                    //                print(Int(distance!))
-                                    guard  let Weekday_Text = Google_Data["weekday_text"].arrayObject else{return}
-        
-                                    self.RestaurantsImages_Array.append(images!)
-                                    self.appdelegate.ids.append(uid as! Int)
-        
-                                    let SingleRestaurantsDetails  = restaurantsDetails(ImageURL: images, Name: name, Cusine: cusines, halalnessLevel: halalnesslevel, suburb: suburb, distance:distance, PhoneNumber: phonenumber, Address: Address, latitude: latitude, longitude: longitude, rating: Rating, OpenClose: OpenClose, weekday_text: Weekday_Text)
-        
-        
-                                    self.appdelegate.RestaurantsDetails_Array.append(SingleRestaurantsDetails)
-        
-                                    self.appdelegate.RestaurantsDetails_Array.sort(by: { $0.distance < $1.distance })
-        
-                                    self.NameArray.append(name!)
-        
-        
-                                    //                            print(self.appdelegate.RestaurantsDetails_Array.count)
-                                    //                            print(cusines)
-        
-                                }
-        
-                                self.CollectionVIew.reloadData()
-        
-                                SVProgressHUD.dismiss()
-                                print(self.RestaurantsImages_Array)
-                                print(self.appdelegate.RestaurantsDetails_Array.count)
-        
-        
-                                print(self.appdelegate.ids)
-                                //                        self.HourAPi()
-                            }
-        //            if self.QrCodeButton.isSelected == true{
-        //                print("BUtt")
-        //
-        //            }
-        //
-        //        }else{
-        
-//        let context =   self.appdelegate.persistentContainer.viewContext
-//        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-//        //request.predicate = NSPredicate(format: "age = %@", "12")
-//        request.returnsObjectsAsFaults = false
-//        
-//        do {
-//            
-//            
-//            let result = try context.fetch(request)
-//            for data in result as! [NSManagedObject] {
-//                
-//                //                print(data.value(forKey: "email") as! String)
-//                //                print(data.value(forKey: "password") as! String)
-//                //
-//                //                if data.value(forKey: "email") as! String != "" && data.value(forKey: "password") as! String != ""{
-//                //
-//                //
-//                //
-//                //                    print(data.value(forKey: "email") as! String)
-//                //                    print(data.value(forKey: "password") as! String)
-//                //
-//                //                }
-//                
-//                
-//                let pi = 3.14159
-//                
-//                let text = String(format: "%.0f", arguments: [pi])
-//                Cuisines()
-//                
-//                print(text)
-//                print(self.appdelegate.Current_Latitude)
-//                print(self.appdelegate.current_Longitude)
-//                print("\(HomeDataAPI)/5/5/\(self.appdelegate.Current_Latitude)/\(self.appdelegate.current_Longitude)/20")
-//                refresher = UIRefreshControl()
-//                refresher.attributedTitle = NSAttributedString(string: "Pull to refresh")
-//                refresher.addTarget(self, action: #selector(HomeViewController.populate), for: UIControlEvents.valueChanged)
-//                CollectionVIew.addSubview(refresher)
-//                self.CollectionVIew.delegate = self
-//                self.CollectionVIew.dataSource = self
-//                self.TableView.delegate = self
-//                self.TableView.dataSource = self
-//                self.searchController.searchResultsUpdater = self
-//                self.searchController.delegate = self
-//                self.searchController.searchBar.delegate = self
-//                self.searchController.hidesNavigationBarDuringPresentation = false
-//                self.searchController.dimsBackgroundDuringPresentation = true
-//                self.searchController.obscuresBackgroundDuringPresentation = false
-//                searchController.searchBar.placeholder = "Search Restaurants"
-//                searchController.searchBar.sizeToFit()
-//                searchController.searchBar.becomeFirstResponder()
-//                self.navigationItem.titleView = searchController.searchBar
-//                
-//                self.definesPresentationContext = true
-//                FacebookGraphRequest()
-//                
-//                
+        self.definesPresentationContext = true
+        FacebookGraphRequest()
+//        if self.appdelegate.LoginAppID == 1{
+//            self.CollectionVIew.delegate = self
+//            self.CollectionVIew.dataSource = self
+//
+//            print("HAris")
+//
+//                    SVProgressHUD.show()
+//             let url = "\(NologinPasswordAPI)/5/5/\(self.appdelegate.Current_Latitude!)/\(self.appdelegate.current_Longitude!)/20"
+//                    Alamofire.request(url).responseJSON { (response) in
+//
+//                        let Distionary1 =  JSON(response.result.value)
+//                        let Restaurants = Distionary1["restaurants"]
+//                        let objects = Restaurants.arrayValue
+////                                                print(objects)
+//                        for RestaurantsDetails in objects{
+//                            let uid = RestaurantsDetails["id"].number
+//                            let name = RestaurantsDetails["name"].string
+//                            let cusines = RestaurantsDetails["cuisines"].arrayValue
+//                            let halalnesslevel = RestaurantsDetails["halalness_level"].string
+//                            let suburb = RestaurantsDetails["suburb"].string
+//                            let images = RestaurantsDetails["picture_path"].string
+//                            let phonenumber = RestaurantsDetails["phone_number"].string
+//                            let Address = RestaurantsDetails["location"].string
+//                            let latitude = RestaurantsDetails["latitude"].double
+//                            let longitude = RestaurantsDetails["longitude"].double
+//                            let distance = RestaurantsDetails["distance"].double
+//                            let Google_Data = JSON(RestaurantsDetails["google_data"])
+//                            guard let Rating = Google_Data["rating"].double else{return}
+//                            guard let OpenClose = Google_Data["open_now"].bool else{return}
+//                            print(Rating)
+//                            print(OpenClose)
+//            //                print(Int(distance!))
+//                            guard  let Weekday_Text = Google_Data["weekday_text"].arrayObject else{return}
+//
+//                            self.RestaurantsImages_Array.append(images!)
+//                            self.appdelegate.ids.append(uid as! Int)
+//
+//                            let SingleRestaurantsDetails  = restaurantsDetails(ImageURL: images, Name: name, Cusine: cusines, halalnessLevel: halalnesslevel, suburb: suburb, distance:distance, PhoneNumber: phonenumber, Address: Address, latitude: latitude, longitude: longitude, rating: Rating, OpenClose: OpenClose, weekday_text: Weekday_Text)
+//
+//
+//                            self.appdelegate.RestaurantsDetails_Array.append(SingleRestaurantsDetails)
+//
+//                            self.appdelegate.RestaurantsDetails_Array.sort(by: { $0.distance < $1.distance })
+//
+//                            self.NameArray.append(name!)
+//
+//
+//                            //                            print(self.appdelegate.RestaurantsDetails_Array.count)
+//                            //                            print(cusines)
+//
+//                        }
+//
+//                        self.CollectionVIew.reloadData()
+//
+//                        SVProgressHUD.dismiss()
+//                        print(self.RestaurantsImages_Array)
+//                        print(self.appdelegate.RestaurantsDetails_Array.count)
+//
+//
+//                        print(self.appdelegate.ids)
+//                        //                        self.HourAPi()
+//                    }
+//            if self.QrCodeButton.isSelected == true{
+//                print("BUtt")
+//
 //            }
+//
+//        }else{
+        
+//            let context =   self.appdelegate.persistentContainer.viewContext
+//            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+//            //request.predicate = NSPredicate(format: "age = %@", "12")
+//            request.returnsObjectsAsFaults = false
 //            
-//        } catch {
-//            
-//            print("Failed")
+//            do {
+//                
+//                
+//                let result = try context.fetch(request)
+//                for data in result as! [NSManagedObject] {
+//                    
+//                    //                print(data.value(forKey: "email") as! String)
+//                    //                print(data.value(forKey: "password") as! String)
+//                    //
+//                    //                if data.value(forKey: "email") as! String != "" && data.value(forKey: "password") as! String != ""{
+//                    //
+//                    //
+//                    //
+//                    //                    print(data.value(forKey: "email") as! String)
+//                    //                    print(data.value(forKey: "password") as! String)
+//                    //
+//                    //                }
+//                    
+//                    
+//               
+//                    
+//                    
+//                }
+//                
+//            } catch {
+//                
+//                print("Failed")
+//            }
+            
 //        }
-//        
-        //        }
         
-        
-        
-        
+     
+  
+       
     }
-    
+ 
     func Cuisines(){
         
         Alamofire.request(CusinesAPI).responseJSON { (response) in
@@ -212,12 +213,12 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                 
                 self.CuisinesArray.append(Name!)
                 self.Cuisines_ID.append(ids as! Int)
-                
+               
             }
-            self.TableView.reloadData()
+             self.TableView.reloadData()
             print(self.CuisinesArray.count)
             print(self.Cuisines_ID)
-            
+        
         }
         
         
@@ -231,9 +232,9 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
         }
     }
     func FacebookGraphRequest(){
-        
+       
         SVProgressHUD.show(withStatus: "Biting")
-        
+  
         let context =   self.appdelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
         //request.predicate = NSPredicate(format: "age = %@", "12")
@@ -243,7 +244,7 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
             for data in result as! [NSManagedObject] {
                 print(data.value(forKey: "email") as! String)
                 print(data.value(forKey: "password") as! String)
-                
+               
                 GetLoginAPI_FetchData(params: ["email":data.value(forKey: "email") as! String,"password":data.value(forKey: "password") as! String])
             }
             
@@ -251,89 +252,89 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
             
             print("Failed")
         }
-        //        GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
-        //        let userID = FBSDKAccessToken.current().userID
-        //        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
-        //
-        //
-        //
-        //        request?.start(completionHandler: { connection, result, error in
-        //
-        //
-        //
-        //            if(error == nil)
-        //            {
-        //                //                guard let UserCred = result as? [String:Any] else {return}
-        //                //               guard let UserName = UserCred["name"] as!
-        //                //                print("result \(UserCred)")
-        //
-        //                let json = JSON(result)
-        //
-        //
-        //                let picture = json["picture"].dictionary
-        //                print(json)
-        //
-        //                let data = picture!["data"]?.dictionaryObject
-        //                print(data)
-        //                let url = data!["url"] as! String
-        //                print(url)
-        //                let remoteImageURL = URL(string: url)!
-        //                print(remoteImageURL)
-        //                // Use Alamofire to download the image
-        //                Alamofire.request(remoteImageURL).responseData { (response) in
-        //                    if response.error == nil {
-        //                        print(response.result)
-        //
-        //                        if let data = response.data {
-        //                            self.ProfilePicture.image = UIImage(data: data)
-        //
-        //
-        //                        }
-        //                    }
-        //                }
-        //
-        //
-        ////                print(picture)
-        ////                guard let data = picture!["data"] as? [String:Any] else {return}
-        ////
-        ////                print(data)
-        //                self.appdelegate.name = json["name"].string
-        //                self.appdelegate.email = json["email"].string
-        //                self.Profile_Name.text = self.appdelegate.name
-        //                print()
-        //                print(self.appdelegate.name)
-        //                print(self.appdelegate.email)
-        //                let dic = ["email":self.appdelegate.email,"name":self.appdelegate.name]
-        //
-        //                let LoginAPI_URL = "\(LoginAPI)?email=\"\(self.appdelegate.email!)\"&name=\"\(self.appdelegate.name!)\""
-        //
-        //                print(LoginAPI_URL)
-        //                self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
-        //
-        //
-        //                //
-        //
-        //
-        //            }
-        //            else
-        //            {
-        //                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
-        //                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
-        //                alert.addAction(okay)
-        //                self.present(alert, animated: true, completion: nil)
-        //                SVProgressHUD.dismiss()
-        //                self.CollectionVIew.reloadData()
-        //                print("error \(error)")
-        //            }
-        //        })
-        
+//        GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
+//        let userID = FBSDKAccessToken.current().userID
+//        var request = FBSDKGraphRequest(graphPath:userID , parameters:["fields": "id, name, first_name, last_name, picture.type(large), email"] , httpMethod: "GET")
+//
+//
+//
+//        request?.start(completionHandler: { connection, result, error in
+//
+//
+//
+//            if(error == nil)
+//            {
+//                //                guard let UserCred = result as? [String:Any] else {return}
+//                //               guard let UserName = UserCred["name"] as!
+//                //                print("result \(UserCred)")
+//
+//                let json = JSON(result)
+//
+//
+//                let picture = json["picture"].dictionary
+//                print(json)
+//
+//                let data = picture!["data"]?.dictionaryObject
+//                print(data)
+//                let url = data!["url"] as! String
+//                print(url)
+//                let remoteImageURL = URL(string: url)!
+//                print(remoteImageURL)
+//                // Use Alamofire to download the image
+//                Alamofire.request(remoteImageURL).responseData { (response) in
+//                    if response.error == nil {
+//                        print(response.result)
+//
+//                        if let data = response.data {
+//                            self.ProfilePicture.image = UIImage(data: data)
+//
+//
+//                        }
+//                    }
+//                }
+//
+//
+////                print(picture)
+////                guard let data = picture!["data"] as? [String:Any] else {return}
+////
+////                print(data)
+//                self.appdelegate.name = json["name"].string
+//                self.appdelegate.email = json["email"].string
+//                self.Profile_Name.text = self.appdelegate.name
+//                print()
+//                print(self.appdelegate.name)
+//                print(self.appdelegate.email)
+//                let dic = ["email":self.appdelegate.email,"name":self.appdelegate.name]
+//
+//                let LoginAPI_URL = "\(LoginAPI)?email=\"\(self.appdelegate.email!)\"&name=\"\(self.appdelegate.name!)\""
+//
+//                print(LoginAPI_URL)
+//                self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
+//
+//
+//                //
+//
+//
+//            }
+//            else
+//            {
+//                let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
+//                let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+//                alert.addAction(okay)
+//                self.present(alert, animated: true, completion: nil)
+//                SVProgressHUD.dismiss()
+//                self.CollectionVIew.reloadData()
+//                print("error \(error)")
+//            }
+//        })
+
         
     }
-    
+ 
     @objc func populate()
     {
         self.appdelegate.RestaurantHours_Array2.removeAll()
-        //        self.appdelegate.RestaurantHours_Array2 = self.appdelegate.RestaurantsHours_Array
+//        self.appdelegate.RestaurantHours_Array2 = self.appdelegate.RestaurantsHours_Array
         self.appdelegate.RestaurantsDetails_Array.removeAll()
         self.appdelegate.ids.removeAll()
         self.appdelegate.RestaurantsHours_Array.removeAll()
@@ -345,79 +346,79 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
         print(self.appdelegate.LoginAPI_RefreshToken)
         self.searchController.searchBar.text  = ""
         self.searchActive = false
-        //         GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
-        //          self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
-        
+//         GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken])
+//          self.GetLoginAPI_FetchData(params: ["email":self.appdelegate.email!,"name":self.appdelegate.name!])
+
         CollectionVIew.reloadData()
         refresher.endRefreshing()
     }
-    
-    
-    
+
+   
+
     func GetLoginAPI_FetchData(params: [String:String]) {
-        
+
         let urlComp = NSURLComponents(string: LoginPasswordAPI)!
-        
+
         var items = [URLQueryItem]()
-        
+
         for (key,value) in params {
             items.append(URLQueryItem(name: key, value: value))
         }
-        
+
         items = items.filter{!$0.name.isEmpty}
-        
+
         if !items.isEmpty {
             urlComp.queryItems = items
         }
-        
+
         var urlRequest = URLRequest(url: urlComp.url!)
         urlRequest.httpMethod = "POST"
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        
+
         let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
             if error != nil
             {
                 print("error=\(error)")
                 return
             }
-            
+
             // Print out response string
             let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             //                    print("responseString = \(responseString)")
-            
-            
+
+
             // Convert server json response to NSDictionary
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-                    
+
                     // Print out dictionary
-                    
+
                     let Refresh_Token = convertedJsonIntoDict["refresh_token"] as! String
                     let User_ID = convertedJsonIntoDict["user_id"] as! Int
-                    
-                    self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
+
+                   self.appdelegate.LoginAPI_RefreshToken = Refresh_Token
                     self.appdelegate.User_ID = User_ID
                     print(User_ID)
                     self.GetRefreshTokenAPI_FetchData(params: ["refresh_token":self.appdelegate.LoginAPI_RefreshToken!])
-                    
-                    
+
+
                 }
             } catch let error as NSError {
                 let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
                 let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
                 alert.addAction(okay)
                 self.present(alert, animated: true, completion: nil)
-                SVProgressHUD.dismiss()
-                self.CollectionVIew.reloadData()
+                   SVProgressHUD.dismiss()
+                 self.CollectionVIew.reloadData()
                 print(error.localizedDescription)
             }
         })
         task.resume()
     }
-    
+
     func GetRefreshTokenAPI_FetchData(params: [String:String]) {
-        
+      
         let urlComp = NSURLComponents(string: RefreshTokenAPI)!
         
         var items = [URLQueryItem]()
@@ -453,25 +454,25 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
             do {
                 if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                     // Print out dictionary
-                    
+                   
                     guard let access_Token = convertedJsonIntoDict["access_token"] as? String else{return}
-                    self.appdelegate.RefreshTokenAPI_AccessToken = access_Token
-                    //                    print(access_Token)
+                self.appdelegate.RefreshTokenAPI_AccessToken = access_Token
+//                    print(access_Token)
                     let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
-                    let url = "\(HomeDataAPI)/5/5/\(self.appdelegate.Current_Latitude!)/\(self.appdelegate.current_Longitude!)/20"
+                   let url = "\(HomeDataAPI)/5/5/\(self.appdelegate.Current_Latitude!)/\(self.appdelegate.current_Longitude!)/20"
                     var RequestHomeData_API = try! URLRequest(url: url, method: HTTPMethod(rawValue: "GET")!, headers: HeadersParameters)
-                    
-                    
+                 
+                 
                     //                request1.httpMethod = "GET"
                     Alamofire.request(RequestHomeData_API).responseJSON(completionHandler: { (HomeDataAPI_REsponse) in
-                        
+                   
                         let Distionary1 =  JSON(HomeDataAPI_REsponse.result.value)
                         let Restaurants = Distionary1["restaurants"]
-                        let objects = Restaurants.arrayValue
-                        //                        print(objects)
+                    let objects = Restaurants.arrayValue
+//                        print(objects)
                         for RestaurantsDetails in objects{
                             let uid = RestaurantsDetails["id"].number
-                            let name = RestaurantsDetails["name"].string
+                           let name = RestaurantsDetails["name"].string
                             let cusines = RestaurantsDetails["cuisines"].arrayValue
                             let halalnesslevel = RestaurantsDetails["halalness_level"].string
                             let suburb = RestaurantsDetails["suburb"].string
@@ -485,13 +486,13 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                             guard let Rating = Google_Data["rating"].double else{return}
                             guard let OpenClose = Google_Data["open_now"].bool else{return}
                             print(Rating)
-                            print(OpenClose)
+                                                            print(OpenClose)
                             print(Int(distance!))
                             guard  let Weekday_Text = Google_Data["weekday_text"].arrayObject else{return}
                             
                             self.RestaurantsImages_Array.append(images!)
                             self.appdelegate.ids.append(uid as! Int)
-                            
+                        
                             let SingleRestaurantsDetails  = restaurantsDetails(ImageURL: images, Name: name, Cusine: cusines, halalnessLevel: halalnesslevel, suburb: suburb, distance: distance, PhoneNumber: phonenumber, Address: Address, latitude: latitude, longitude: longitude, rating: Rating, OpenClose: OpenClose, weekday_text: Weekday_Text)
                             
                             
@@ -500,24 +501,24 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                             self.appdelegate.RestaurantsDetails_Array.sort(by: { $0.distance < $1.distance })
                             
                             self.NameArray.append(name!)
-                            
-                            
-                            //                            print(self.appdelegate.RestaurantsDetails_Array.count)
-                            //                            print(cusines)
+                        
+                       
+//                            print(self.appdelegate.RestaurantsDetails_Array.count)
+//                            print(cusines)
                             
                         }
-                        
+                  
                         self.CollectionVIew.reloadData()
                         SVProgressHUD.dismiss()
-                        print(self.RestaurantsImages_Array)
+                         print(self.RestaurantsImages_Array)
                         print(self.appdelegate.RestaurantsDetails_Array.count)
-                        
-                        
+
+                      
                         print(self.appdelegate.ids)
-                        //                        self.HourAPi()
+//                        self.HourAPi()
                     })
-                    
-                    
+                   
+                   
                     
                 }
                 
@@ -526,17 +527,17 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                 let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
                 alert.addAction(okay)
                 self.present(alert, animated: true, completion: nil)
-                SVProgressHUD.dismiss()
-                self.CollectionVIew.reloadData()
+                   SVProgressHUD.dismiss()
+                 self.CollectionVIew.reloadData()
                 print(error.localizedDescription)
             }
         })
         task.resume()
         print(self.appdelegate.RestaurantsDetails_Array)
-        
+
     }
     
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false
         self.appdelegate.RestaurantHours_Array2.removeAll()
@@ -548,23 +549,23 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
         self.filtered.removeAll()
         self.TableView.isHidden = true
         FacebookGraphRequest()
-        //        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
     }
     
     func updateSearchResults(for searchController: UISearchController)
     {
-        
+       
         self.searchString = searchController.searchBar.text
-        
+      
         if searchString == ""{
             self.appdelegate.RestaurantHours_Array2.removeAll()
             //        self.appdelegate.RestaurantHours_Array2 = self.appdelegate.RestaurantsHours_Array
             self.appdelegate.RestaurantsDetails_Array.removeAll()
             self.appdelegate.ids.removeAll()
-            //            self.appdelegate.RestaurantsHours_Array.removeAll()
+//            self.appdelegate.RestaurantsHours_Array.removeAll()
             self.appdelegate.HoursAPIArray.removeAll()
             self.filtered.removeAll()
-            
+
             
         }else {
             self.TableView.isHidden = true
@@ -578,7 +579,7 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                         switch response.result {
                         case .failure(let error):
                             print(error)
-                            let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
+                             let alert = UIAlertController(title: "Network Error", message: "The Internet connection appears to be offline.", preferredStyle: .alert)
                             let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
                             alert.addAction(okay)
                             self.present(alert, animated: true, completion: nil)
@@ -588,13 +589,13 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                             }
                         case .success(let responseObject):
                             
-                            //                            print(responseObject)
+//                            print(responseObject)
                             self.appdelegate.RestaurantHours_Array2.removeAll()
                             //        self.appdelegate.RestaurantHours_Array2 = self.appdelegate.RestaurantsHours_Array
                             self.appdelegate.RestaurantsDetails_Array.removeAll()
                             self.appdelegate.ids.removeAll()
-                            //                            self.appdelegate.RestaurantsHours_Array.removeAll()
-                            //                            self.appdelegate.HoursAPIArray.removeAll()
+//                            self.appdelegate.RestaurantsHours_Array.removeAll()
+//                            self.appdelegate.HoursAPIArray.removeAll()
                             let Distionary1 =  JSON(responseObject)
                             let Restaurants = Distionary1["restaurants"]
                             let objects = Restaurants.arrayValue
@@ -628,35 +629,35 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
                                 
                                 
                                 
-                                //                                                            print(self.appdelegate.RestaurantsDetails_Array.count)
-                                //                                                            print(cusines)
+//                                                            print(self.appdelegate.RestaurantsDetails_Array.count)
+//                                                            print(cusines)
                                 
                             }
                             self.filtered = self.appdelegate.RestaurantsDetails_Array.filter({ (item) -> Bool in
-                                let countryText: NSString = item.Name as NSString
-                                
+                                        let countryText: NSString = item.Name as NSString
+
                                 return (countryText.range(of: self.searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-                                
-                            })
+                              
+                                    })
                             print("Success")
                             print(self.filtered)
-                            self.filtered.sort(by: { $0.distance < $1.distance })
+                             self.filtered.sort(by: { $0.distance < $1.distance })
                             if self.filtered.isEmpty == true{
                                 let alert = UIAlertController(title: nil, message: "Sorry, But we did not find any restaurant for you.", preferredStyle: .alert)
                                 let okay = UIAlertAction(title: "Okay", style: .cancel, handler: { (action) in
                                     self.searchActive = false
-                                    self.searchController.searchBar.text = ""
+                                   self.searchController.searchBar.text = ""
                                     
                                     self.searchActive = true
-                                    
+                                   
                                     self.CollectionVIew.reloadData()
                                 })
                                 alert.addAction(okay)
                                 self.present(alert, animated: true, completion: nil)
-                                
+                               
                                 SVProgressHUD.dismiss()
-                                
-                                
+                           
+                            
                             }else {
                                 self.CollectionVIew.reloadData()
                                 SVProgressHUD.dismiss()
@@ -668,78 +669,66 @@ class SecondHomeViewController: UIViewController,UISearchControllerDelegate, UIS
             
             
         }
-        
+       
         print("HalalBites")
+
         
+      
+      
+      
+       
         
-        
-        
-        
-        
-        
-        
+       
         
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.TableView.isHidden = false
         searchActive = true
-        self.searchController.searchBar.text = ""
-        self.CollectionVIew.reloadData()
+   self.searchController.searchBar.text = ""
+       self.CollectionVIew.reloadData()
     }
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false
-        
-        CollectionVIew.reloadData()
+       
+       CollectionVIew.reloadData()
     }
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         if !searchActive {
             searchActive = true
-            self.CollectionVIew.reloadData()
+             self.CollectionVIew.reloadData()
         }
         
         searchController.searchBar.resignFirstResponder()
     }
-    
+  
     @IBAction func QrCodeScanner(_ sender: Any) {
-       
-            let alertVC = PMAlertController(title: "", description: "For QRCODE scan, you need to login first!!", image:UIImage(named: "halal"), style: .alert)
-            
-            
-            self.appdelegate.LoginAppID = 2
-        alertVC.addAction(PMAlertAction(title: "Cancel", style: .cancel, action: { () in
-            print("Cancel")
-        }))
-            alertVC.addAction(PMAlertAction(title: "Login", style: .default, action: { () in
-                self.appdelegate.RestaurantsDetails_Array.removeAll()
-                self.appdelegate.RestaurantsHours_Array.removeAll()
-                self.appdelegate.HoursAPIArray.removeAll()
-                self.appdelegate.ids.removeAll()
-                let uistoryboard:UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                uistoryboard.instantiateInitialViewController()
-                let loginviewcontroller :UIViewController = uistoryboard.instantiateViewController(withIdentifier: "loginView")
-                self.present(loginviewcontroller, animated: true, completion: nil)
-            }))
-            
-            
-            
-            self.present(alertVC, animated: true, completion: nil)
-            
-            
+      
+        let vc = MGPScannerViewController.viewControllerFrom(storyboard: "Main", withIdentifier: "MGPScannerViewController")!
+        vc.delegate = self
+        vc.closeBarButtonDirection = .right
+        vc.overlayColor = UIColor(displayP3Red: 250/255, green: 182/255, blue: 0/255, alpha: 1.0)
+        //        vc.closeBarButton = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(close))
+        
+        let nav = UINavigationController(rootViewController: vc)
+        nav.navigationBar.tintColor = UIColor.white
+        nav.navigationBar.barTintColor = UIColor(displayP3Red: 250/255, green: 182/255, blue: 0/255, alpha: 1.0)
+        nav.navigationItem.title  = "Scan QR code"
+        present(nav, animated: true, completion: nil)
         
     }
     @objc func close() {
         navigationController?.popViewController(animated: true)
         //        self.dismiss(animated: true, completion: nil)
     }
-    
-    
+ 
+  
 }
-extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewDataSource, UISearchResultsUpdating, UIViewControllerTransitioningDelegate,UITableViewDelegate,UITableViewDataSource{
-    
+extension HomeViewController:UICollectionViewDelegate,UICollectionViewDataSource, UISearchResultsUpdating, UIViewControllerTransitioningDelegate,UITableViewDelegate,UITableViewDataSource{
+ 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if searchActive {
@@ -751,7 +740,7 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
         }
     }
     
-    
+        
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -792,35 +781,35 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                     
                     if let data = response.data {
                         cell.ImageView.image = UIImage(data: data)
-                        
-                        
+                      
+                    
                     }
                 }
             }
             
-            
-            
-            if self.filtered[indexPath.row].rating! == nil{
-                cell.Rating.text = ""
-                
-            }else{
-                
-                cell.Rating.text = "\(self.filtered[indexPath.row].rating!)"
-            }
-            
-            if self.filtered[indexPath.row].OpenClose! == true{
-                cell.OpenClose.textColor = .green
-                cell.OpenClose.text = "Open Now"
                 
                 
-            }else {
-                cell.OpenClose.textColor = .red
-                cell.OpenClose.text = "Closed"
+                if self.filtered[indexPath.row].rating! == nil{
+                    cell.Rating.text = ""
+                    
+                }else{
+                    
+                    cell.Rating.text = "\(self.filtered[indexPath.row].rating!)"
+                }
                 
-                
-            }
-            
-            let text = String(format: "%.0f", arguments: [self.filtered[indexPath.row].distance])
+                if self.filtered[indexPath.row].OpenClose! == true{
+                    cell.OpenClose.textColor = .green
+                    cell.OpenClose.text = "Open Now"
+                    
+                    
+                }else {
+                    cell.OpenClose.textColor = .red
+                    cell.OpenClose.text = "Closed"
+                    
+                    
+                }
+       
+             let text = String(format: "%.0f", arguments: [self.filtered[indexPath.row].distance])
             print(text)
             if text == "0"{
                 let text1 = String(format: "%.1f", arguments: [self.filtered[indexPath.row].distance])
@@ -833,48 +822,48 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                 
             }
             
-            //            cell.Distance.text = "\(self.filtered[indexPath.row].distance!)km"
+//            cell.Distance.text = "\(self.filtered[indexPath.row].distance!)km"
             
         }else {
-            cell.Name.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].Name
-            if self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine.count > 1{
-                cell.Cusine.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[0]["name"].string!), \(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[1]["name"].string!)"
-                
-                
-            }else {
-                cell.Cusine.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[0]["name"].string!)"
-                
-            }
-            //        for CusineName in self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine{
-            //            name = CusineName["name"].string
-            //        }
-            
-            if self.appdelegate.RestaurantsDetails_Array[indexPath.row].halalnessLevel == ""{
-                cell.HalalnessLevel.text = "N/A"
-                
-                
-            }else{
-                cell.HalalnessLevel.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].halalnessLevel
-            }
-            
-            cell.Suburb.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].suburb
-            //        cell.Rating.text = String(self.appdelegate.RestaurantsHours_Array[indexPath.row].rating!)
+          cell.Name.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].Name
+        if self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine.count > 1{
+            cell.Cusine.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[0]["name"].string!), \(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[1]["name"].string!)"
             
             
-            let remoteImageURL = URL(string: "https://halalbites.org/\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].ImageURL!)")!
-            print(remoteImageURL)
-            // Use Alamofire to download the image
-            Alamofire.request(remoteImageURL).responseData { (response) in
-                if response.error == nil {
-                    print(response.result)
-                    
-                    if let data = response.data {
-                        cell.ImageView.image = UIImage(data: data)
-                        
-                    }
+        }else {
+            cell.Cusine.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine[0]["name"].string!)"
+            
+        }
+        //        for CusineName in self.appdelegate.RestaurantsDetails_Array[indexPath.row].Cusine{
+        //            name = CusineName["name"].string
+        //        }
+        
+        if self.appdelegate.RestaurantsDetails_Array[indexPath.row].halalnessLevel == ""{
+            cell.HalalnessLevel.text = "N/A"
+            
+            
+        }else{
+            cell.HalalnessLevel.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].halalnessLevel
+        }
+        
+        cell.Suburb.text = self.appdelegate.RestaurantsDetails_Array[indexPath.row].suburb
+//        cell.Rating.text = String(self.appdelegate.RestaurantsHours_Array[indexPath.row].rating!)
+        
+
+        let remoteImageURL = URL(string: "https://halalbites.org/\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].ImageURL!)")!
+        print(remoteImageURL)
+        // Use Alamofire to download the image
+        Alamofire.request(remoteImageURL).responseData { (response) in
+            if response.error == nil {
+                print(response.result)
+                
+                if let data = response.data {
+                    cell.ImageView.image = UIImage(data: data)
+                 
                 }
             }
-            
+        }
+        
             
             
             if self.appdelegate.RestaurantsDetails_Array[indexPath.row].rating! == nil{
@@ -896,16 +885,16 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                 
                 
             }
-            
+           
             
             let text = String(format: "%.0f", arguments: [self.appdelegate.RestaurantsDetails_Array[indexPath.row].distance])
             if text == "0"{
-                let text1 = String(format: "%.1f", arguments: [self.appdelegate.RestaurantsDetails_Array[indexPath.row].distance])
-                cell.Distance.text = "\(text)km"
+                 let text1 = String(format: "%.1f", arguments: [self.appdelegate.RestaurantsDetails_Array[indexPath.row].distance])
+                 cell.Distance.text = "\(text)km"
                 
             }else if text == ""{
                 
-                cell.Distance.text = "N/A"
+                 cell.Distance.text = "N/A"
                 
             }
             else {
@@ -915,8 +904,8 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                 
             }
             print(text)
-            
-            //        cell.Distance.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].distance!)km"
+      
+//        cell.Distance.text = "\(self.appdelegate.RestaurantsDetails_Array[indexPath.row].distance!)km"
         }
         return cell
         
@@ -925,7 +914,7 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.appdelegate.didselect_Number = indexPath.row
         searchController.searchBar.resignFirstResponder()
-        self.performSegue(withIdentifier: "Details", sender: self)
+//        self.performSegue(withIdentifier: "Details", sender: self)
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -945,7 +934,7 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        print(indexPath.row)
+          print(indexPath.row)
         searchController.searchBar.resignFirstResponder()
         SVProgressHUD.show(withStatus: "Biting")
         self.TableView.isHidden = true
@@ -955,29 +944,29 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
         self.appdelegate.ids.removeAll()
         //                            self.appdelegate.RestaurantsHours_Array.removeAll()
         //                            self.appdelegate.HoursAPIArray.removeAll()
-        self.appdelegate.didselect_Number = indexPath.row
+            self.appdelegate.didselect_Number = indexPath.row
         self.searchActive = false
-        var BodyParameters = ["cuisines":self.Cuisines_ID[indexPath.row],"latitude":self.appdelegate.Current_Latitude,"longitude":self.appdelegate.current_Longitude] as [String : Any]
-        let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
-        
-        Alamofire.request(SearchAPI, method: .post, parameters: BodyParameters, encoding: JSONEncoding.default, headers:
-            HeadersParameters).responseJSON { (response) in
-                switch response.result {
-                case .failure(let error):
-                    print(error)
-                    let alert = UIAlertController(title: "Error", message: "Internet Connection Has been Lost", preferredStyle: .alert)
-                    let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
-                    alert.addAction(okay)
-                    self.present(alert, animated: true, completion: nil)
-                    SVProgressHUD.dismiss()
-                    if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
-                        print(responseString)
-                    }
-                case .success(let responseObject):
+            var BodyParameters = ["cuisines":self.Cuisines_ID[indexPath.row],"latitude":self.appdelegate.Current_Latitude,"longitude":self.appdelegate.current_Longitude] as [String : Any]
+            let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
+            
+            Alamofire.request(SearchAPI, method: .post, parameters: BodyParameters, encoding: JSONEncoding.default, headers:
+                HeadersParameters).responseJSON { (response) in
+                    switch response.result {
+                    case .failure(let error):
+                        print(error)
+                        let alert = UIAlertController(title: "Error", message: "Internet Connection Has been Lost", preferredStyle: .alert)
+                        let okay = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+                        alert.addAction(okay)
+                        self.present(alert, animated: true, completion: nil)
+                        SVProgressHUD.dismiss()
+                        if let data = response.data, let responseString = String(data: data, encoding: .utf8) {
+                            print(responseString)
+                        }
+                    case .success(let responseObject):
                     let Distionary1 =  JSON(responseObject)
                     print(Distionary1)
                     let Restaurants = Distionary1["restaurants"]
-                    
+              
                     let objects = Restaurants.arrayValue
                     //                        print(objects)
                     for RestaurantsDetails in objects{
@@ -1004,7 +993,7 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                         let SingleRestaurantsDetails  = restaurantsDetails(ImageURL: images, Name: name, Cusine: cusines, halalnessLevel: halalnesslevel, suburb: suburb, distance: distance, PhoneNumber: phonenumber, Address: Address, latitude: latitude, longitude: longitude, rating: Rating, OpenClose: OpenClose, weekday_text: Weekday_Text)
                         
                         self.appdelegate.RestaurantsDetails_Array.append(SingleRestaurantsDetails)
-                        self.appdelegate.RestaurantsDetails_Array.sort(by: { $0.distance < $1.distance })
+                         self.appdelegate.RestaurantsDetails_Array.sort(by: { $0.distance < $1.distance })
                         self.NameArray.append(name!)
                         
                         
@@ -1018,20 +1007,20 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
                     print(self.appdelegate.RestaurantsDetails_Array)
                     SVProgressHUD.dismiss(completion: {
                         self.CollectionVIew.reloadData()
-                        
-                        
+                     
+
                         
                     })
-                }
-        }
+                    }
+            }
+            
         
-        
-        
-        
-        
+            
+            
+            
         
     }
-    
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let controller = segue.destination
@@ -1057,12 +1046,12 @@ extension SecondHomeViewController:UICollectionViewDelegate,UICollectionViewData
     
 }
 
-extension SecondHomeViewController: MGPScannerViewControllerDelegate {
+extension HomeViewController: MGPScannerViewControllerDelegate {
     
     func barcodeDidScannedWith(text: String, OfType type: ScannedItem, error: ScanningError?) {
         
         if let error = error {
-            
+           
             let alertVC = PMAlertController(title: "", description: "Scanning error!. Please try again.", image:UIImage(named: "halal"), style: .alert)
             
             
@@ -1074,71 +1063,71 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
             
             
             self.present(alertVC, animated: true, completion: nil)
-            
+           
             return
         }
         
         switch type {
         case .email:
             
-            //            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            //
-            //
-            //
-            //            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-            //                print("Capture action OK")
-            //            }))
-            //
-            //
-            //
-            //            self.present(alertVC, animated: true, completion: nil)
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
             print(text)
             
         case .link:
-            //            SVProgressHUD.show(withStatus: "Biting")
-            //            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            //
-            //
-            //
-            //            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-            //                print("Capture action OK")
-            //            }))
-            //
-            //
-            //
-            //            self.present(alertVC, animated: true, completion: nil)
+//            SVProgressHUD.show(withStatus: "Biting")
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
             print(text)
-            
+          
         case .number:
-            
-            //            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            //
-            //
-            //
-            //            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-            //                print("Capture action OK")
-            //            }))
-            //
-            //
-            //
-            //            self.present(alertVC, animated: true, completion: nil)
+           
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
             print(text)
-            
+      
         case .text:
-            
-            //            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
-            //
-            //
-            //
-            //            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
-            //                print("Capture action OK")
-            //            }))
-            //
-            //
-            //
-            //            self.present(alertVC, animated: true, completion: nil)
+          
+//            let alertVC = PMAlertController(title: "", description: "This is not the appropiate QR code to scan. Please try again with the correct one.", image:UIImage(named: "halal"), style: .alert)
+//
+//
+//
+//            alertVC.addAction(PMAlertAction(title: "OK", style: .default, action: { () in
+//                print("Capture action OK")
+//            }))
+//
+//
+//
+//            self.present(alertVC, animated: true, completion: nil)
             print(text)
-            
+        
         case .other:
             let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
             print(text)
@@ -1177,7 +1166,7 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
-                    SVProgressHUD.dismiss()
+                     SVProgressHUD.dismiss()
                     
                 }else if message == "deal_not_given"{
                     
@@ -1194,7 +1183,7 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
                     
                     self.present(alertVC, animated: true, completion: nil)
                     
-                    SVProgressHUD.dismiss()
+                     SVProgressHUD.dismiss()
                 }else {
                     let alertVC = PMAlertController(title: message!, description: message!, image:UIImage(named: "halal"), style: .alert)
                     
@@ -1204,7 +1193,7 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
                     }))
                     alertVC.addAction(PMAlertAction(title: "CONFIRM", style: .default, action: { () in
                         SVProgressHUD.show(withStatus: "Biting")
-                        let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
+                         let HeadersParameters = ["Accept":"application/json","Authorization":"Bearer \(self.appdelegate.RefreshTokenAPI_AccessToken!)"]
                         let bodyParams = ["user_id":self.appdelegate.User_ID,"deal_id":deal_id] as [String : Any]
                         Alamofire.request(ProcessAPI, method: .post, parameters: bodyParams, encoding: JSONEncoding.default, headers: HeadersParameters).responseJSON(completionHandler: { (response) in
                             print(response.result.value)
@@ -1249,14 +1238,14 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
                     
                     
                     self.present(alertVC, animated: true, completion: nil)
-                    SVProgressHUD.dismiss()
+                     SVProgressHUD.dismiss()
                     
                     
                 }
-                
+               
             }
             
-            
+           
         }
         
     }
@@ -1295,7 +1284,7 @@ extension SecondHomeViewController: MGPScannerViewControllerDelegate {
 
 //-----------------------------------------------------
 
-extension SecondHomeViewController {
+extension HomeViewController {
     
     func showAlert(title: String?, msg: String?, actions: [UIAlertAction]?) {
         
@@ -1335,7 +1324,7 @@ extension SecondHomeViewController {
 }
 
 
-extension SecondHomeViewController: ScrollingNavigationControllerDelegate {
+extension HomeViewController: ScrollingNavigationControllerDelegate {
     func scrollingNavigationController(_ controller: ScrollingNavigationController, willChangeState state: NavigationBarState) {
         view.needsUpdateConstraints()
     }

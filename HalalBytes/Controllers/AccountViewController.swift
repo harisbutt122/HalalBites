@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKCoreKit
 import CoreData
+
 class AccountViewController: UIViewController {
 
     @IBOutlet weak var LogoutButton: UIView!
@@ -112,4 +113,7 @@ let appdelegate = UIApplication.shared.delegate as! AppDelegate
             UIApplication.shared.openURL(url as URL)
         }
     }
+   
 }
+
+
